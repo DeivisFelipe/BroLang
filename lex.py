@@ -16,13 +16,16 @@ palavras_reservadas = {
 }
 
 # Lista de nomes de tokens
-tokens = (
+tokens = [
     'EPAREN',
     'DPAREN',
     'ECHAVES',
     'DCHAVES',
     'PVIRGULA',
     'VIRGULA',
+
+    # Variáveis
+    'NAME',
 
     # Operadores
     'SOMA',
@@ -39,7 +42,7 @@ tokens = (
     'ELOGICO',
     'OULOGICO',
     'NEGACAO',
-) + list(palavras_reservadas.values())
+] + list(palavras_reservadas.values())
 
 # Expressões regulares para tokens simples
 t_EPAREN = r'\('
@@ -76,16 +79,30 @@ def t_INTEIRO(t):
     return t
 
 def t_CHAR(t):
-    r'\'[a-zA-Z0-9]\''
+    r'\"[\w|\d|\s|\t|\n]*\"'
     t.value = str(t.value)
     return t
 
 def t_ID(t):
     r'[a-zA-Z][a-zA-Z0-9]*'
-    t.type = palavras_reservadas.get(t.value, 'ID')
+    # Verifica se é uma palavra reservada, se for seta o tipo como a palavra reservada, se não, seta como NAME
+    t.type = palavras_reservadas.get(t.value, 'NAME')
     return t
 
 # Comentários
 def t_COMENTARIO(t):
     r'(/\*(.|\n)*?\*/)|(//.*)'
     pass
+
+# contato de linhas
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
+# Erro
+def t_error(t):
+    print("Caractere ilegal '%s'" % t.value[0])
+    t.lexer.skip(1)
+
+# Constrói o lexer
+lexer = lex.lex()
