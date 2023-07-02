@@ -2,13 +2,18 @@
 nulo principal() {
     inteiro a, b;
     real c;
+    char d;
 
     a = 1;
-    b = 2;
-    c = 3.0;
+    b = 3;
+    ler(c);
 
-    se (a > b) entao
-        escrever("a maior que b");
-    senao
-        escrever("a menor que b");
+    enquanto (a < b) {
+        a = a + 1;
+        se (a > b) {
+            escrever("a maior que b");
+        } senao {
+            escrever("a menor que b");
+        }
+    }
 }

@@ -15,3 +15,6 @@ lexer.input(codigo)
 # Pega todos os tokens
 for tok in lexer:
     print(tok)
+
+# Importa o parser criado
+from yacc import parser
