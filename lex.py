@@ -12,59 +12,32 @@ palavras_reservadas = {
     'enquanto': 'ENQUANTO',
     'ler': 'LER',
     'escrever': 'ESCREVER',
-    'entao': 'ENTAO',
 }
 
 # Lista de nomes de tokens
 tokens = [
-    'EPAREN',
-    'DPAREN',
-    'ECHAVES',
-    'DCHAVES',
-    'PVIRGULA',
-    'VIRGULA',
-
     # Variáveis
     'NAME',
 
     # Operadores
-    'SOMA',
-    'SUBTRACAO',
-    'MULTIPLICACAO',
-    'DIVISAO',
     'IGUAL',
-    'MAIOR',
-    'MENOR',
     'MAIORIGUAL',
     'MENORIGUAL',
     'DIFERENTE',
-    'ATRIBUICAO',
     'ELOGICO',
     'OULOGICO',
-    'NEGACAO',
 ] + list(palavras_reservadas.values())
 
 # Expressões regulares para tokens simples
-t_EPAREN = r'\('
-t_DPAREN = r'\)'
-t_ECHAVES = r'\{'
-t_DCHAVES = r'\}'
-t_PVIRGULA = r';'
-t_VIRGULA = r','
-t_SOMA = r'\+'
-t_SUBTRACAO = r'-'
-t_MULTIPLICACAO = r'\*'
-t_DIVISAO = r'/'
 t_IGUAL = r'=='
-t_MAIOR = r'>'
-t_MENOR = r'<'
 t_MAIORIGUAL = r'>='
 t_MENORIGUAL = r'<='
 t_DIFERENTE = r'!='
-t_ATRIBUICAO = r'='
 t_ELOGICO = r'&&'
 t_OULOGICO = r'\|\|'
-t_NEGACAO = r'!'
+
+literals = ['=', '+', '-', '*', '/', '(', ')', '{', '}', ';', ',', '>','<', '=', '!']
+
 t_ignore = ' \t'
 
 # Expressões regulares com ações

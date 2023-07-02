@@ -1,10 +1,8 @@
 # Esse é o programa base do BroLang
 
-with open('codigo.bro', 'r') as file:
+arquivo = 'teste.bro'
+with open(arquivo, 'r') as file:
     codigo = file.read()
-
-# Printa o código
-print(codigo)
 
 # Importa o lexer criado
 from lex import lexer
@@ -12,9 +10,20 @@ from lex import lexer
 # Seta o input
 lexer.input(codigo)
 
-# Pega todos os tokens
-for tok in lexer:
-    print(tok)
-
-# Importa o parser criado
+# Importa o yacc criado
 from yacc import parser
+
+# Executa o yacc
+result = parser.parse(codigo, lexer=lexer, debug=False,tracking=True)
+
+if result:
+    print("Compilado com sucesso!")
+    print("Resultado:")
+    print(result)
+
+    # Cria o arquivo de saída
+    with open('saida.c', 'w') as file:
+        file.write(str(result))
+
+else:
+    print("Erro de compilacao")
