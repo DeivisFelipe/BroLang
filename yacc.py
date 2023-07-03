@@ -18,6 +18,7 @@ precedence = (
 
 # Variáveis
 variaveis = {}
+temporarias = {}
 
 # Declaração inicial
 start = 'programa'
@@ -25,10 +26,25 @@ start = 'programa'
 # Programa  = PRONTO
 def p_programa(p):
     "programa : NULO PRINCIPAL '(' ')' '{' codigo '}'"
+    p[0] = p[6]
+    comando = p[0]
+    printaComando(comando[0])
+    avaliaComando(comando[0])
+    print('')
+    repetir = True if comando[1] != None else False
+    while repetir:
+        comando = comando[1]
+        printaComando(comando[0])
+        avaliaComando(comando[0])
+        repetir = True if comando[1] != None else False
+        print('')
+    
+    printaVariaveis()
 
 # Código dentro da função principal = PRONTO
 def p_codigo(p):
     "codigo : dec_variavel comando"
+    p[0] = p[2]
 
 
 # DECLARAÇÃO DE VARIÁVEIS
@@ -49,7 +65,7 @@ def p_salva_variavel(p):
             print("Erro: Variavel", nome, "ja declarada, linha: ", p.lineno(1))
             exit(1)
         # Se não foi, salva
-        variaveis[nome] = { 'tipo': p[1], 'valor': None, 'nome': nome}
+        variaveis[nome] = { 'tipo': p[1], 'valor': None, 'nome': nome, 'linha': p.lineno(1)}
 
 # Lista de nomes = PRONTO
 def p_lista_nomes(p):
@@ -78,6 +94,12 @@ def p_tipo(p):
              | CHAR '''
     p[0] = p[1]
 
+# Printa variáveis
+def printaVariaveis():
+    for variavel in variaveis:
+        print(variavel, variaveis[variavel])
+
+
 # FINAL DA DECLARAÇÃO DE VARIÁVEIS
 
 # COMANDOS
@@ -91,7 +113,10 @@ def p_comando(p):
                 | comando_saida comando
                 | vazio
     '''
-    pass
+    if(len(p) > 2):
+        p[0] = (p[1], p[2])
+    else:
+        p[0] = None
 
 def p_comando_se(p):
     "comando_se : SE '(' expressao ')' '{' comando '}' senao"
@@ -125,7 +150,8 @@ def p_comando_atribuicao(p):
         print("Erro: Tipo incompativel: esperado:", p[1]['tipo'], ", recebido:", tipo, "linha: ", p.lineno(1))
         exit(1)
     # Se for compatível, seta o valor da variável
-    variaveis[p[1]['nome']] = { 'tipo': p[1]['tipo'], 'valor': p[3], 'nome': p[1]['nome']}
+    #variaveis[p[1]['nome']] = { 'tipo': p[1]['tipo'], 'valor': p[3], 'nome': p[1]['nome']}
+    p[0] = { 'tipo': p[1]['tipo'], 'valor': p[3], 'nome': p[1]['nome'], 'comando_tipo': 'atribuicao' }
 
 # Expressões = PRONTO
 def p_expressao(p):
@@ -161,49 +187,122 @@ def p_expressao(p):
 
             # as duas expressoes são do mesmo tipo
             if(tipo1 == tipo2):
-                if p[2] == "+":
-                    p[0] = p[1] + p[3]
-                elif p[2] == "-":
-                    p[0] = p[1] - p[3]
-                elif p[2] == "*":
-                    p[0] = p[1] * p[3]
-                elif p[2] == "/":
-                    p[0] = p[1] / p[3]
-                elif p[2] == ">":
-                    p[0] = 1 if p[1] > p[3] else 0
-                elif p[2] == "<":
-                    p[0] = 1 if p[1] < p[3] else 0
-                elif p[2] == "==":
-                    p[0] = 1 if p[1] == p[3] else 0
-                elif p[2] == ">=":
-                    p[0] = 1 if p[1] >= p[3] else 0
-                elif p[2] == "<=":
-                    p[0] = 1 if p[1] <= p[3] else 0
-                elif p[2] == "!=":
-                    p[0] = 1 if p[1] != p[3] else 0
-                elif p[2] == "&&":
-                    p[0] = 1 if p[1] and p[3] else 0
-                elif p[2] == "||":
-                    p[0] = 1 if p[1] or p[3] else 0
-                
+                p[0] = { 'tipo': tipo1, 'op1': p[1], 'operador': p[2], 'op2': p[3], 'comando_tipo': 'binaria'}
             # as duas expressoes são de tipos diferentes
             else:
-                print("Erro: Tipos incompativeis: " + tipo1 + " " + str(p[2]) + " " + tipo2)
+                print("Erro: Tipos incompativeis: " + tipo1 + " " + str(p[2]) + " " + tipo2 + " linha: ", p.lineno(1))
                 exit(1)
     elif(len(p) == 3):
         if(p[1] == "!"):
-            p[0] = 1 if not p[2] else 0
+            p[0] = { 'tipo': 'inteiro', 'op1': p[2], 'operador': p[1], 'comando_tipo': 'unaria'}
     else:
         # Verifica se o p[1] é um dicionário
         if (isinstance(p[1], dict)):
-            p[0] = p[1]["valor"]
+            p[0] = { 'tipo': p[1]['tipo'], 'op1': p[1], 'operador': None, 'comando_tipo': 'variavel'}
         else:
-            p[0] = p[1]
+            p[0] = { 'tipo': type(p[1]).__name__, 'op1': p[1], 'operador': None, 'comando_tipo': 'constante'}
+
+# Avalia a comando
+def avaliaComando(expressao):
+    if(expressao['comando_tipo'] == 'binaria'):
+        if expressao['operador'] == "+":
+            return avaliaComando(expressao['op1']) + avaliaComando(expressao['op2'])
+        elif expressao['operador'] == "-":
+            return avaliaComando(expressao['op1']) - avaliaComando(expressao['op2'])
+        elif expressao['operador'] == "*":
+            return avaliaComando(expressao['op1']) * avaliaComando(expressao['op2'])
+        elif expressao['operador'] == "/":
+            return avaliaComando(expressao['op1']) / avaliaComando(expressao['op2'])
+        elif expressao['operador'] == ">":
+            return 1 if avaliaComando(expressao['op1']) > avaliaComando(expressao['op2']) else 0
+        elif expressao['operador'] == "<":
+            return 1 if avaliaComando(expressao['op1']) < avaliaComando(expressao['op2']) else 0
+        elif expressao['operador'] == "==":
+            return 1 if avaliaComando(expressao['op1']) == avaliaComando(expressao['op2']) else 0
+        elif expressao['operador'] == ">=":
+            return 1 if avaliaComando(expressao['op1']) >= avaliaComando(expressao['op2']) else 0
+        elif expressao['operador'] == "<=":
+            return 1 if avaliaComando(expressao['op1']) <= avaliaComando(expressao['op2']) else 0
+        elif expressao['operador'] == "!=":
+            return 1 if avaliaComando(expressao['op1']) != avaliaComando(expressao['op2']) else 0
+        elif expressao['operador'] == "&&":
+            return 1 if avaliaComando(expressao['op1']) and avaliaComando(expressao['op2']) else 0
+        elif expressao['operador'] == "||":
+            return 1 if avaliaComando(expressao['op1']) or avaliaComando(expressao['op2']) else 0
+    elif(expressao['comando_tipo'] == 'unaria'):
+        if expressao['operador'] == "!":
+            return 1 if not avaliaComando(expressao['op1']) else 0
+    elif expressao['comando_tipo'] == 'variavel':
+        return variaveis[expressao['op1']['nome']]['valor']
+    elif expressao['comando_tipo'] == 'negacao':
+        return -avaliaComando(expressao['op1'])
+    elif expressao['comando_tipo'] == 'atribuicao':
+        variaveis[expressao['nome']]['valor'] = avaliaComando(expressao['valor'])
+    elif expressao['comando_tipo'] == 'print':
+        print("")
+        print(">> ", end="")
+        if expressao['tipo'] == 'char':
+            print(avaliaComando(expressao['valor'])[1:-1])
+        elif expressao['tipo'] == 'numero':
+            print(avaliaComando(expressao['valor']))
+        elif expressao['tipo'] == 'variavel':
+            print(avaliaComando(expressao['valor']))
+    elif expressao['comando_tipo'] == 'entrada':
+        # Se foi, seta o valor da variável
+        print("")
+        print(">> ", end="")
+        valor = input()
+        # Verifica se o valor é um número ou uma string
+        if valor.isnumeric():
+            # Verifica se tem ponto, se tiver, é um float
+            valor = int(valor)
+        # Se não for, é uma string
+        else:
+            # Verifica se o valor é um float
+            try:
+                valor = float(valor)
+            except:
+                valor = '"' + valor + '"'
+        variaveis[expressao['nome']] = { 'tipo': expressao['valor']['tipo'], 'valor': valor, 'nome': expressao['nome']}
+    else:
+        return expressao['op1']
+    
+# Printa a comando
+def printaComando(expressao):
+    if(expressao['comando_tipo'] == 'binaria'):
+        print("( ", end=" ")
+        printaComando(expressao['op1'])
+        print(expressao['operador'], end=" ")
+        printaComando(expressao['op2'])
+        print(" )", end=" ")
+    elif(expressao['comando_tipo'] == 'unaria'):
+        print("( " + expressao['operador'], end=" ")
+        printaComando(expressao['op1'])
+        print(" )", end=" ")
+    elif expressao['comando_tipo'] == 'variavel':
+        print("( " + expressao['op1']['nome'], end="")
+        print(" )", end=" ")
+    elif expressao['comando_tipo'] == 'negacao':
+        print("( " + expressao['operador'], end=" ")
+        printaComando(expressao['op1'])
+        print(" )", end=" ")
+    elif expressao['comando_tipo'] == 'atribuicao':
+        print("( " + expressao['nome'] + " = ", end=" ")
+        printaComando(expressao['valor'])
+        print(" )", end=" ")
+    elif expressao['comando_tipo'] == 'print':
+        print("print ", end=" ")
+        printaComando(expressao['valor'])
+    elif expressao['comando_tipo'] == 'entrada':
+        print("entrada ", end=" ")
+        printaComando(expressao['valor'])
+    else:
+        print(str(expressao['op1']), end=" ")
 
 # Expressão negativa = PRONTO
 def p_expressao_negativa(p):
     "expressao : '-' expressao %prec UMINUS"
-    p[0] = -p[2]
+    p[0] = { 'tipo': p[2]['tipo'], 'op1': p[2], 'operador': p[1], 'comando_tipo': 'negacao'}
 
 # Expressão com nome = PRONTO
 def p_name(p):
@@ -220,20 +319,8 @@ def p_comando_entrada(p):
     if p[3] not in variaveis:
         print("Erro: Variavel", p[3], "nao declarada, linha: ", p.lineno(1))
         exit(1)
-    # Se foi, seta o valor da variável
-    valor = input()
-    # Verifica se o valor é um número ou uma string
-    if valor.isnumeric():
-        # Verifica se tem ponto, se tiver, é um float
-        valor = int(valor)
-    # Se não for, é uma string
-    else:
-        # Verifica se o valor é um float
-        try:
-            valor = float(valor)
-        except:
-            valor = '"' + valor + '"'
-    variaveis[p[3]] = { 'tipo': variaveis[p[3]]['tipo'], 'valor': valor, 'nome': p[3]}
+    valor = { 'tipo': variaveis[p[3]]['tipo'], 'op1': variaveis[p[3]], 'operador': None, 'comando_tipo': 'variavel'}
+    p[0] = { 'tipo': None, 'valor': valor, 'nome': p[3], 'comando_tipo': 'entrada'}
 
 # Função de escrita = PRONTO
 def p_comando_saida(p):
@@ -241,15 +328,20 @@ def p_comando_saida(p):
                      | ESCREVER '(' expressao ')' ';' 
                      | ESCREVER '(' name ')' ';' '''
     if not isinstance(p[3], dict):
+        valor = { 'tipo': type(p[3]).__name__, 'op1': p[3], 'operador': None, 'comando_tipo': 'constante'}
         # Verifica se o tipo do valor
         if type(p[3]).__name__ == 'str':
             # Tira as aspas da string
-            p[3] = p[3][1:-1]
-            print(p[3])
+            p[0] = { 'tipo': 'char', 'valor': valor, 'nome': None, 'comando_tipo': 'print'}
         else:
-            print(p[3])
+            p[0] = { 'tipo': 'numero', 'valor': valor, 'nome': None, 'comando_tipo': 'print'}
     else:
-        print(p[3]['valor'])
+        # Verifica se o p[3] tem o atributo 'nome', se tiver, é uma variável
+        if 'nome' in p[3]:
+            valor = { 'tipo': p[3]['tipo'], 'op1': p[3], 'operador': None, 'comando_tipo': 'variavel'}
+        else:
+            valor = p[3]
+        p[0] = { 'tipo': 'variavel', 'valor': valor, 'nome': None, 'comando_tipo': 'print'}
 
 # FINAL DOS COMANDOS
 
