@@ -1,4 +1,3 @@
-int main() {
 	int a, b, c;
 	int teste;
 	char teste1;
@@ -18,4 +17,3 @@ int main() {
 			a = 1 + 2 + 1;
 		}
 	}
-}

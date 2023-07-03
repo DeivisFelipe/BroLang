@@ -21,66 +21,66 @@ Rule 15    comando -> comando_atribuicao comando
 Rule 16    comando -> comando_entrada comando
 Rule 17    comando -> comando_saida comando
 Rule 18    comando -> vazio
-Rule 19    comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab senao
+Rule 19    comando_se -> SE ( expressao ) { comando } senao
 Rule 20    senao -> SENAO { comando }
 Rule 21    senao -> vazio
-Rule 22    comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+Rule 22    comando_enquanto -> ENQUANTO ( expressao ) { comando }
 Rule 23    comando_atribuicao -> name = expressao ;
-Rule 24    comando_entrada -> LER ( NAME ) ;
-Rule 25    comando_saida -> ESCREVER ( CHAR ) ;
-Rule 26    comando_saida -> ESCREVER ( expressao ) ;
-Rule 27    comando_saida -> ESCREVER ( NAME ) ;
-Rule 28    expressao -> expressao + expressao
-Rule 29    expressao -> expressao - expressao
-Rule 30    expressao -> expressao * expressao
-Rule 31    expressao -> expressao / expressao
-Rule 32    expressao -> expressao > expressao
-Rule 33    expressao -> expressao < expressao
-Rule 34    expressao -> expressao IGUAL expressao
-Rule 35    expressao -> expressao MAIORIGUAL expressao
-Rule 36    expressao -> expressao MENORIGUAL expressao
-Rule 37    expressao -> expressao DIFERENTE expressao
-Rule 38    expressao -> expressao ELOGICO expressao
-Rule 39    expressao -> expressao OULOGICO expressao
-Rule 40    expressao -> ( expressao )
-Rule 41    expressao -> INTEIRO
-Rule 42    expressao -> REAL
-Rule 43    expressao -> CHAR
-Rule 44    expressao -> name
-Rule 45    name -> NAME
-Rule 46    expressao -> - expressao
-Rule 47    aumenta_tab -> <empty>
-Rule 48    diminui_tab -> <empty>
-Rule 49    vazio -> <empty>
+Rule 24    expressao -> expressao + expressao
+Rule 25    expressao -> expressao - expressao
+Rule 26    expressao -> expressao * expressao
+Rule 27    expressao -> expressao / expressao
+Rule 28    expressao -> expressao > expressao
+Rule 29    expressao -> expressao < expressao
+Rule 30    expressao -> expressao IGUAL expressao
+Rule 31    expressao -> expressao MAIORIGUAL expressao
+Rule 32    expressao -> expressao MENORIGUAL expressao
+Rule 33    expressao -> expressao DIFERENTE expressao
+Rule 34    expressao -> expressao ELOGICO expressao
+Rule 35    expressao -> expressao OULOGICO expressao
+Rule 36    expressao -> ( expressao )
+Rule 37    expressao -> ! expressao
+Rule 38    expressao -> INTEIRO
+Rule 39    expressao -> REAL
+Rule 40    expressao -> CHAR
+Rule 41    expressao -> name
+Rule 42    expressao -> - expressao
+Rule 43    name -> NAME
+Rule 44    comando_entrada -> LER ( NAME ) ;
+Rule 45    comando_saida -> ESCREVER ( CHAR ) ;
+Rule 46    comando_saida -> ESCREVER ( expressao ) ;
+Rule 47    comando_saida -> ESCREVER ( name ) ;
+Rule 48    vazio -> <empty>
 
 Terminals, with rules where they appear
 
-(                    : 1 19 22 24 25 26 27 40
-)                    : 1 19 22 24 25 26 27 40
-*                    : 30
-+                    : 28
+!                    : 37
+(                    : 1 19 22 36 44 45 46 47
+)                    : 1 19 22 36 44 45 46 47
+*                    : 26
++                    : 24
 ,                    : 7
--                    : 29 46
-/                    : 31
-;                    : 3 9 23 24 25 26 27
-<                    : 33
+-                    : 25 42
+/                    : 27
+;                    : 3 9 23 44 45 46 47
+<                    : 29
 =                    : 23
->                    : 32
-CHAR                 : 12 25 43
-DIFERENTE            : 37
-ELOGICO              : 38
+>                    : 28
+CHAR                 : 12 40 45
+DIFERENTE            : 33
+ELOGICO              : 34
 ENQUANTO             : 22
-ESCREVER             : 25 26 27
-IGUAL                : 34
-INTEIRO              : 10 41
-LER                  : 24
-MAIORIGUAL           : 35
-MENORIGUAL           : 36
-NAME                 : 6 7 24 27 45
+ESCREVER             : 45 46 47
+IGUAL                : 30
+INTEIRO              : 10 38
+LER                  : 44
+MAIORIGUAL           : 31
+MENORIGUAL           : 32
+NAME                 : 6 7 43 44
 NULO                 : 1
-OULOGICO             : 39
+OULOGICO             : 35
 PRINCIPAL            : 1
-REAL                 : 11 42
+REAL                 : 11 39
 SE                   : 19
 SENAO                : 20
 error                : 9
@@ -89,7 +89,6 @@ error                : 9
 
 Nonterminals, with rules where they appear
 
-aumenta_tab          : 19 22
 codigo               : 1
 comando              : 2 13 14 15 16 17 19 20 22
 comando_atribuicao   : 15
@@ -98,11 +97,10 @@ comando_entrada      : 16
 comando_saida        : 17
 comando_se           : 13
 dec_variavel         : 2 3
-diminui_tab          : 19 22
-expressao            : 19 22 23 26 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 38 39 39 40 46
+expressao            : 19 22 23 24 24 25 25 26 26 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 37 42 46
 lista_n              : 6 7
 lista_nomes          : 5
-name                 : 23 44
+name                 : 23 41 47
 programa             : 0
 salva_variavel       : 3
 senao                : 19
@@ -162,17 +160,17 @@ state 6
     (4) dec_variavel -> . vazio
     (9) dec_variavel -> . tipo error ;
     (5) salva_variavel -> . tipo lista_nomes
-    (49) vazio -> .
+    (48) vazio -> .
     (10) tipo -> . INTEIRO
     (11) tipo -> . REAL
     (12) tipo -> . CHAR
 
-    LER             reduce using rule 49 (vazio -> .)
-    ESCREVER        reduce using rule 49 (vazio -> .)
-    NAME            reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 49 (vazio -> .)
-    ENQUANTO        reduce using rule 49 (vazio -> .)
-    }               reduce using rule 49 (vazio -> .)
+    SE              reduce using rule 48 (vazio -> .)
+    ENQUANTO        reduce using rule 48 (vazio -> .)
+    LER             reduce using rule 48 (vazio -> .)
+    ESCREVER        reduce using rule 48 (vazio -> .)
+    NAME            reduce using rule 48 (vazio -> .)
+    }               reduce using rule 48 (vazio -> .)
     INTEIRO         shift and go to state 12
     REAL            shift and go to state 13
     CHAR            shift and go to state 14
@@ -199,23 +197,22 @@ state 8
     (16) comando -> . comando_entrada comando
     (17) comando -> . comando_saida comando
     (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
     (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
 
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
 
     comando                        shift and go to state 16
     comando_se                     shift and go to state 17
@@ -224,25 +221,24 @@ state 8
     comando_entrada                shift and go to state 20
     comando_saida                  shift and go to state 21
     vazio                          shift and go to state 22
-    aumenta_tab                    shift and go to state 23
-    name                           shift and go to state 24
+    name                           shift and go to state 25
 
 state 9
 
     (3) dec_variavel -> salva_variavel . ; dec_variavel
 
-    ;               shift and go to state 28
+    ;               shift and go to state 29
 
 
 state 10
 
     (4) dec_variavel -> vazio .
 
+    SE              reduce using rule 4 (dec_variavel -> vazio .)
+    ENQUANTO        reduce using rule 4 (dec_variavel -> vazio .)
     LER             reduce using rule 4 (dec_variavel -> vazio .)
     ESCREVER        reduce using rule 4 (dec_variavel -> vazio .)
     NAME            reduce using rule 4 (dec_variavel -> vazio .)
-    SE              reduce using rule 4 (dec_variavel -> vazio .)
-    ENQUANTO        reduce using rule 4 (dec_variavel -> vazio .)
     }               reduce using rule 4 (dec_variavel -> vazio .)
 
 
@@ -252,10 +248,10 @@ state 11
     (5) salva_variavel -> tipo . lista_nomes
     (6) lista_nomes -> . NAME lista_n
 
-    error           shift and go to state 29
-    NAME            shift and go to state 31
+    error           shift and go to state 30
+    NAME            shift and go to state 32
 
-    lista_nomes                    shift and go to state 30
+    lista_nomes                    shift and go to state 31
 
 state 12
 
@@ -304,33 +300,31 @@ state 17
     (16) comando -> . comando_entrada comando
     (17) comando -> . comando_saida comando
     (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
     (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
 
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
 
     comando_se                     shift and go to state 17
-    comando                        shift and go to state 32
+    comando                        shift and go to state 33
     comando_enquanto               shift and go to state 18
     comando_atribuicao             shift and go to state 19
     comando_entrada                shift and go to state 20
     comando_saida                  shift and go to state 21
     vazio                          shift and go to state 22
-    aumenta_tab                    shift and go to state 23
-    name                           shift and go to state 24
+    name                           shift and go to state 25
 
 state 18
 
@@ -341,33 +335,31 @@ state 18
     (16) comando -> . comando_entrada comando
     (17) comando -> . comando_saida comando
     (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
     (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
 
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
 
     comando_enquanto               shift and go to state 18
-    comando                        shift and go to state 33
+    comando                        shift and go to state 34
     comando_se                     shift and go to state 17
     comando_atribuicao             shift and go to state 19
     comando_entrada                shift and go to state 20
     comando_saida                  shift and go to state 21
     vazio                          shift and go to state 22
-    aumenta_tab                    shift and go to state 23
-    name                           shift and go to state 24
+    name                           shift and go to state 25
 
 state 19
 
@@ -378,33 +370,31 @@ state 19
     (16) comando -> . comando_entrada comando
     (17) comando -> . comando_saida comando
     (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
     (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
 
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
 
     comando_atribuicao             shift and go to state 19
-    comando                        shift and go to state 34
+    comando                        shift and go to state 35
     comando_se                     shift and go to state 17
     comando_enquanto               shift and go to state 18
     comando_entrada                shift and go to state 20
     comando_saida                  shift and go to state 21
     vazio                          shift and go to state 22
-    aumenta_tab                    shift and go to state 23
-    name                           shift and go to state 24
+    name                           shift and go to state 25
 
 state 20
 
@@ -415,33 +405,31 @@ state 20
     (16) comando -> . comando_entrada comando
     (17) comando -> . comando_saida comando
     (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
     (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
 
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
 
     comando_entrada                shift and go to state 20
-    comando                        shift and go to state 35
+    comando                        shift and go to state 36
     comando_se                     shift and go to state 17
     comando_enquanto               shift and go to state 18
     comando_atribuicao             shift and go to state 19
     comando_saida                  shift and go to state 21
     vazio                          shift and go to state 22
-    aumenta_tab                    shift and go to state 23
-    name                           shift and go to state 24
+    name                           shift and go to state 25
 
 state 21
 
@@ -452,33 +440,31 @@ state 21
     (16) comando -> . comando_entrada comando
     (17) comando -> . comando_saida comando
     (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
     (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
 
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
 
     comando_saida                  shift and go to state 21
-    comando                        shift and go to state 36
+    comando                        shift and go to state 37
     comando_se                     shift and go to state 17
     comando_enquanto               shift and go to state 18
     comando_atribuicao             shift and go to state 19
     comando_entrada                shift and go to state 20
     vazio                          shift and go to state 22
-    aumenta_tab                    shift and go to state 23
-    name                           shift and go to state 24
+    name                           shift and go to state 25
 
 state 22
 
@@ -489,1888 +475,1380 @@ state 22
 
 state 23
 
-    (19) comando_se -> aumenta_tab . SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> aumenta_tab . ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> SE . ( expressao ) { comando } senao
 
-    SE              shift and go to state 37
-    ENQUANTO        shift and go to state 38
+    (               shift and go to state 38
 
 
 state 24
 
-    (23) comando_atribuicao -> name . = expressao ;
+    (22) comando_enquanto -> ENQUANTO . ( expressao ) { comando }
 
-    =               shift and go to state 39
+    (               shift and go to state 39
 
 
 state 25
 
-    (24) comando_entrada -> LER . ( NAME ) ;
+    (23) comando_atribuicao -> name . = expressao ;
 
-    (               shift and go to state 40
+    =               shift and go to state 40
 
 
 state 26
 
-    (45) name -> NAME .
-
-    =               reduce using rule 45 (name -> NAME .)
-    ;               reduce using rule 45 (name -> NAME .)
-    +               reduce using rule 45 (name -> NAME .)
-    -               reduce using rule 45 (name -> NAME .)
-    *               reduce using rule 45 (name -> NAME .)
-    /               reduce using rule 45 (name -> NAME .)
-    >               reduce using rule 45 (name -> NAME .)
-    <               reduce using rule 45 (name -> NAME .)
-    IGUAL           reduce using rule 45 (name -> NAME .)
-    MAIORIGUAL      reduce using rule 45 (name -> NAME .)
-    MENORIGUAL      reduce using rule 45 (name -> NAME .)
-    DIFERENTE       reduce using rule 45 (name -> NAME .)
-    ELOGICO         reduce using rule 45 (name -> NAME .)
-    OULOGICO        reduce using rule 45 (name -> NAME .)
-    )               reduce using rule 45 (name -> NAME .)
-
-
-state 27
-
-    (25) comando_saida -> ESCREVER . ( CHAR ) ;
-    (26) comando_saida -> ESCREVER . ( expressao ) ;
-    (27) comando_saida -> ESCREVER . ( NAME ) ;
+    (44) comando_entrada -> LER . ( NAME ) ;
 
     (               shift and go to state 41
 
 
+state 27
+
+    (43) name -> NAME .
+
+    =               reduce using rule 43 (name -> NAME .)
+    )               reduce using rule 43 (name -> NAME .)
+    +               reduce using rule 43 (name -> NAME .)
+    -               reduce using rule 43 (name -> NAME .)
+    *               reduce using rule 43 (name -> NAME .)
+    /               reduce using rule 43 (name -> NAME .)
+    >               reduce using rule 43 (name -> NAME .)
+    <               reduce using rule 43 (name -> NAME .)
+    IGUAL           reduce using rule 43 (name -> NAME .)
+    MAIORIGUAL      reduce using rule 43 (name -> NAME .)
+    MENORIGUAL      reduce using rule 43 (name -> NAME .)
+    DIFERENTE       reduce using rule 43 (name -> NAME .)
+    ELOGICO         reduce using rule 43 (name -> NAME .)
+    OULOGICO        reduce using rule 43 (name -> NAME .)
+    ;               reduce using rule 43 (name -> NAME .)
+
+
 state 28
+
+    (45) comando_saida -> ESCREVER . ( CHAR ) ;
+    (46) comando_saida -> ESCREVER . ( expressao ) ;
+    (47) comando_saida -> ESCREVER . ( name ) ;
+
+    (               shift and go to state 42
+
+
+state 29
 
     (3) dec_variavel -> salva_variavel ; . dec_variavel
     (3) dec_variavel -> . salva_variavel ; dec_variavel
     (4) dec_variavel -> . vazio
     (9) dec_variavel -> . tipo error ;
     (5) salva_variavel -> . tipo lista_nomes
-    (49) vazio -> .
+    (48) vazio -> .
     (10) tipo -> . INTEIRO
     (11) tipo -> . REAL
     (12) tipo -> . CHAR
 
-    LER             reduce using rule 49 (vazio -> .)
-    ESCREVER        reduce using rule 49 (vazio -> .)
-    NAME            reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 49 (vazio -> .)
-    ENQUANTO        reduce using rule 49 (vazio -> .)
-    }               reduce using rule 49 (vazio -> .)
+    SE              reduce using rule 48 (vazio -> .)
+    ENQUANTO        reduce using rule 48 (vazio -> .)
+    LER             reduce using rule 48 (vazio -> .)
+    ESCREVER        reduce using rule 48 (vazio -> .)
+    NAME            reduce using rule 48 (vazio -> .)
+    }               reduce using rule 48 (vazio -> .)
     INTEIRO         shift and go to state 12
     REAL            shift and go to state 13
     CHAR            shift and go to state 14
 
     salva_variavel                 shift and go to state 9
-    dec_variavel                   shift and go to state 42
+    dec_variavel                   shift and go to state 43
     vazio                          shift and go to state 10
     tipo                           shift and go to state 11
 
-state 29
+state 30
 
     (9) dec_variavel -> tipo error . ;
 
-    ;               shift and go to state 43
+    ;               shift and go to state 44
 
 
-state 30
+state 31
 
     (5) salva_variavel -> tipo lista_nomes .
 
     ;               reduce using rule 5 (salva_variavel -> tipo lista_nomes .)
 
 
-state 31
+state 32
 
     (6) lista_nomes -> NAME . lista_n
     (7) lista_n -> . , NAME lista_n
     (8) lista_n -> . vazio
-    (49) vazio -> .
+    (48) vazio -> .
 
-    ,               shift and go to state 45
-    ;               reduce using rule 49 (vazio -> .)
+    ,               shift and go to state 46
+    ;               reduce using rule 48 (vazio -> .)
 
-    lista_n                        shift and go to state 44
-    vazio                          shift and go to state 46
+    lista_n                        shift and go to state 45
+    vazio                          shift and go to state 47
 
-state 32
+state 33
 
     (13) comando -> comando_se comando .
 
     }               reduce using rule 13 (comando -> comando_se comando .)
 
 
-state 33
+state 34
 
     (14) comando -> comando_enquanto comando .
 
     }               reduce using rule 14 (comando -> comando_enquanto comando .)
 
 
-state 34
+state 35
 
     (15) comando -> comando_atribuicao comando .
 
     }               reduce using rule 15 (comando -> comando_atribuicao comando .)
 
 
-state 35
+state 36
 
     (16) comando -> comando_entrada comando .
 
     }               reduce using rule 16 (comando -> comando_entrada comando .)
 
 
-state 36
+state 37
 
     (17) comando -> comando_saida comando .
 
     }               reduce using rule 17 (comando -> comando_saida comando .)
 
 
-state 37
-
-    (19) comando_se -> aumenta_tab SE . ( expressao ) { comando } diminui_tab senao
-
-    (               shift and go to state 47
-
-
 state 38
 
-    (22) comando_enquanto -> aumenta_tab ENQUANTO . ( expressao ) { comando } diminui_tab
+    (19) comando_se -> SE ( . expressao ) { comando } senao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
     (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
+    expressao                      shift and go to state 49
+    name                           shift and go to state 55
 
 state 39
 
-    (23) comando_atribuicao -> name = . expressao ;
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (22) comando_enquanto -> ENQUANTO ( . expressao ) { comando }
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    name                           shift and go to state 49
-    expressao                      shift and go to state 50
+    expressao                      shift and go to state 56
+    name                           shift and go to state 55
 
 state 40
 
-    (24) comando_entrada -> LER ( . NAME ) ;
+    (23) comando_atribuicao -> name = . expressao ;
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    NAME            shift and go to state 56
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
+    name                           shift and go to state 55
+    expressao                      shift and go to state 57
 
 state 41
 
-    (25) comando_saida -> ESCREVER ( . CHAR ) ;
-    (26) comando_saida -> ESCREVER ( . expressao ) ;
-    (27) comando_saida -> ESCREVER ( . NAME ) ;
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (44) comando_entrada -> LER ( . NAME ) ;
 
-    CHAR            shift and go to state 57
-    NAME            shift and go to state 59
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    -               shift and go to state 51
+    NAME            shift and go to state 58
 
-    expressao                      shift and go to state 58
-    name                           shift and go to state 49
 
 state 42
 
-    (3) dec_variavel -> salva_variavel ; dec_variavel .
+    (45) comando_saida -> ESCREVER ( . CHAR ) ;
+    (46) comando_saida -> ESCREVER ( . expressao ) ;
+    (47) comando_saida -> ESCREVER ( . name ) ;
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    LER             reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
-    ESCREVER        reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
-    NAME            reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
-    SE              reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
-    ENQUANTO        reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
-    }               reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
+    CHAR            shift and go to state 59
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
+    expressao                      shift and go to state 60
+    name                           shift and go to state 61
 
 state 43
 
-    (9) dec_variavel -> tipo error ; .
+    (3) dec_variavel -> salva_variavel ; dec_variavel .
 
-    LER             reduce using rule 9 (dec_variavel -> tipo error ; .)
-    ESCREVER        reduce using rule 9 (dec_variavel -> tipo error ; .)
-    NAME            reduce using rule 9 (dec_variavel -> tipo error ; .)
-    SE              reduce using rule 9 (dec_variavel -> tipo error ; .)
-    ENQUANTO        reduce using rule 9 (dec_variavel -> tipo error ; .)
-    }               reduce using rule 9 (dec_variavel -> tipo error ; .)
+    SE              reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
+    ENQUANTO        reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
+    LER             reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
+    ESCREVER        reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
+    NAME            reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
+    }               reduce using rule 3 (dec_variavel -> salva_variavel ; dec_variavel .)
 
 
 state 44
+
+    (9) dec_variavel -> tipo error ; .
+
+    SE              reduce using rule 9 (dec_variavel -> tipo error ; .)
+    ENQUANTO        reduce using rule 9 (dec_variavel -> tipo error ; .)
+    LER             reduce using rule 9 (dec_variavel -> tipo error ; .)
+    ESCREVER        reduce using rule 9 (dec_variavel -> tipo error ; .)
+    NAME            reduce using rule 9 (dec_variavel -> tipo error ; .)
+    }               reduce using rule 9 (dec_variavel -> tipo error ; .)
+
+
+state 45
 
     (6) lista_nomes -> NAME lista_n .
 
     ;               reduce using rule 6 (lista_nomes -> NAME lista_n .)
 
 
-state 45
+state 46
 
     (7) lista_n -> , . NAME lista_n
 
-    NAME            shift and go to state 60
+    NAME            shift and go to state 62
 
 
-state 46
+state 47
 
     (8) lista_n -> vazio .
 
     ;               reduce using rule 8 (lista_n -> vazio .)
 
 
-state 47
-
-    (19) comando_se -> aumenta_tab SE ( . expressao ) { comando } diminui_tab senao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
-
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
-
-    expressao                      shift and go to state 61
-    name                           shift and go to state 49
-
 state 48
 
-    (22) comando_enquanto -> aumenta_tab ENQUANTO ( . expressao ) { comando } diminui_tab
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (36) expressao -> ( . expressao )
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 62
-    name                           shift and go to state 49
+    expressao                      shift and go to state 63
+    name                           shift and go to state 55
 
 state 49
 
-    (44) expressao -> name .
+    (19) comando_se -> SE ( expressao . ) { comando } senao
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
 
-    ;               reduce using rule 44 (expressao -> name .)
-    +               reduce using rule 44 (expressao -> name .)
-    -               reduce using rule 44 (expressao -> name .)
-    *               reduce using rule 44 (expressao -> name .)
-    /               reduce using rule 44 (expressao -> name .)
-    >               reduce using rule 44 (expressao -> name .)
-    <               reduce using rule 44 (expressao -> name .)
-    IGUAL           reduce using rule 44 (expressao -> name .)
-    MAIORIGUAL      reduce using rule 44 (expressao -> name .)
-    MENORIGUAL      reduce using rule 44 (expressao -> name .)
-    DIFERENTE       reduce using rule 44 (expressao -> name .)
-    ELOGICO         reduce using rule 44 (expressao -> name .)
-    OULOGICO        reduce using rule 44 (expressao -> name .)
-    )               reduce using rule 44 (expressao -> name .)
+    )               shift and go to state 64
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+    >               shift and go to state 69
+    <               shift and go to state 70
+    IGUAL           shift and go to state 71
+    MAIORIGUAL      shift and go to state 72
+    MENORIGUAL      shift and go to state 73
+    DIFERENTE       shift and go to state 74
+    ELOGICO         shift and go to state 75
+    OULOGICO        shift and go to state 76
 
 
 state 50
 
-    (23) comando_atribuicao -> name = expressao . ;
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
+    (42) expressao -> - . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    ;               shift and go to state 63
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-    >               shift and go to state 68
-    <               shift and go to state 69
-    IGUAL           shift and go to state 70
-    MAIORIGUAL      shift and go to state 71
-    MENORIGUAL      shift and go to state 72
-    DIFERENTE       shift and go to state 73
-    ELOGICO         shift and go to state 74
-    OULOGICO        shift and go to state 75
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
+    expressao                      shift and go to state 77
+    name                           shift and go to state 55
 
 state 51
 
-    (46) expressao -> - . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (37) expressao -> ! . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 76
-    name                           shift and go to state 49
+    expressao                      shift and go to state 78
+    name                           shift and go to state 55
 
 state 52
 
-    (40) expressao -> ( . expressao )
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (38) expressao -> INTEIRO .
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    )               reduce using rule 38 (expressao -> INTEIRO .)
+    +               reduce using rule 38 (expressao -> INTEIRO .)
+    -               reduce using rule 38 (expressao -> INTEIRO .)
+    *               reduce using rule 38 (expressao -> INTEIRO .)
+    /               reduce using rule 38 (expressao -> INTEIRO .)
+    >               reduce using rule 38 (expressao -> INTEIRO .)
+    <               reduce using rule 38 (expressao -> INTEIRO .)
+    IGUAL           reduce using rule 38 (expressao -> INTEIRO .)
+    MAIORIGUAL      reduce using rule 38 (expressao -> INTEIRO .)
+    MENORIGUAL      reduce using rule 38 (expressao -> INTEIRO .)
+    DIFERENTE       reduce using rule 38 (expressao -> INTEIRO .)
+    ELOGICO         reduce using rule 38 (expressao -> INTEIRO .)
+    OULOGICO        reduce using rule 38 (expressao -> INTEIRO .)
+    ;               reduce using rule 38 (expressao -> INTEIRO .)
 
-    expressao                      shift and go to state 77
-    name                           shift and go to state 49
 
 state 53
 
-    (41) expressao -> INTEIRO .
+    (39) expressao -> REAL .
 
-    ;               reduce using rule 41 (expressao -> INTEIRO .)
-    +               reduce using rule 41 (expressao -> INTEIRO .)
-    -               reduce using rule 41 (expressao -> INTEIRO .)
-    *               reduce using rule 41 (expressao -> INTEIRO .)
-    /               reduce using rule 41 (expressao -> INTEIRO .)
-    >               reduce using rule 41 (expressao -> INTEIRO .)
-    <               reduce using rule 41 (expressao -> INTEIRO .)
-    IGUAL           reduce using rule 41 (expressao -> INTEIRO .)
-    MAIORIGUAL      reduce using rule 41 (expressao -> INTEIRO .)
-    MENORIGUAL      reduce using rule 41 (expressao -> INTEIRO .)
-    DIFERENTE       reduce using rule 41 (expressao -> INTEIRO .)
-    ELOGICO         reduce using rule 41 (expressao -> INTEIRO .)
-    OULOGICO        reduce using rule 41 (expressao -> INTEIRO .)
-    )               reduce using rule 41 (expressao -> INTEIRO .)
+    )               reduce using rule 39 (expressao -> REAL .)
+    +               reduce using rule 39 (expressao -> REAL .)
+    -               reduce using rule 39 (expressao -> REAL .)
+    *               reduce using rule 39 (expressao -> REAL .)
+    /               reduce using rule 39 (expressao -> REAL .)
+    >               reduce using rule 39 (expressao -> REAL .)
+    <               reduce using rule 39 (expressao -> REAL .)
+    IGUAL           reduce using rule 39 (expressao -> REAL .)
+    MAIORIGUAL      reduce using rule 39 (expressao -> REAL .)
+    MENORIGUAL      reduce using rule 39 (expressao -> REAL .)
+    DIFERENTE       reduce using rule 39 (expressao -> REAL .)
+    ELOGICO         reduce using rule 39 (expressao -> REAL .)
+    OULOGICO        reduce using rule 39 (expressao -> REAL .)
+    ;               reduce using rule 39 (expressao -> REAL .)
 
 
 state 54
 
-    (42) expressao -> REAL .
+    (40) expressao -> CHAR .
 
-    ;               reduce using rule 42 (expressao -> REAL .)
-    +               reduce using rule 42 (expressao -> REAL .)
-    -               reduce using rule 42 (expressao -> REAL .)
-    *               reduce using rule 42 (expressao -> REAL .)
-    /               reduce using rule 42 (expressao -> REAL .)
-    >               reduce using rule 42 (expressao -> REAL .)
-    <               reduce using rule 42 (expressao -> REAL .)
-    IGUAL           reduce using rule 42 (expressao -> REAL .)
-    MAIORIGUAL      reduce using rule 42 (expressao -> REAL .)
-    MENORIGUAL      reduce using rule 42 (expressao -> REAL .)
-    DIFERENTE       reduce using rule 42 (expressao -> REAL .)
-    ELOGICO         reduce using rule 42 (expressao -> REAL .)
-    OULOGICO        reduce using rule 42 (expressao -> REAL .)
-    )               reduce using rule 42 (expressao -> REAL .)
+    )               reduce using rule 40 (expressao -> CHAR .)
+    +               reduce using rule 40 (expressao -> CHAR .)
+    -               reduce using rule 40 (expressao -> CHAR .)
+    *               reduce using rule 40 (expressao -> CHAR .)
+    /               reduce using rule 40 (expressao -> CHAR .)
+    >               reduce using rule 40 (expressao -> CHAR .)
+    <               reduce using rule 40 (expressao -> CHAR .)
+    IGUAL           reduce using rule 40 (expressao -> CHAR .)
+    MAIORIGUAL      reduce using rule 40 (expressao -> CHAR .)
+    MENORIGUAL      reduce using rule 40 (expressao -> CHAR .)
+    DIFERENTE       reduce using rule 40 (expressao -> CHAR .)
+    ELOGICO         reduce using rule 40 (expressao -> CHAR .)
+    OULOGICO        reduce using rule 40 (expressao -> CHAR .)
+    ;               reduce using rule 40 (expressao -> CHAR .)
 
 
 state 55
 
-    (43) expressao -> CHAR .
+    (41) expressao -> name .
 
-    ;               reduce using rule 43 (expressao -> CHAR .)
-    +               reduce using rule 43 (expressao -> CHAR .)
-    -               reduce using rule 43 (expressao -> CHAR .)
-    *               reduce using rule 43 (expressao -> CHAR .)
-    /               reduce using rule 43 (expressao -> CHAR .)
-    >               reduce using rule 43 (expressao -> CHAR .)
-    <               reduce using rule 43 (expressao -> CHAR .)
-    IGUAL           reduce using rule 43 (expressao -> CHAR .)
-    MAIORIGUAL      reduce using rule 43 (expressao -> CHAR .)
-    MENORIGUAL      reduce using rule 43 (expressao -> CHAR .)
-    DIFERENTE       reduce using rule 43 (expressao -> CHAR .)
-    ELOGICO         reduce using rule 43 (expressao -> CHAR .)
-    OULOGICO        reduce using rule 43 (expressao -> CHAR .)
-    )               reduce using rule 43 (expressao -> CHAR .)
+    )               reduce using rule 41 (expressao -> name .)
+    +               reduce using rule 41 (expressao -> name .)
+    -               reduce using rule 41 (expressao -> name .)
+    *               reduce using rule 41 (expressao -> name .)
+    /               reduce using rule 41 (expressao -> name .)
+    >               reduce using rule 41 (expressao -> name .)
+    <               reduce using rule 41 (expressao -> name .)
+    IGUAL           reduce using rule 41 (expressao -> name .)
+    MAIORIGUAL      reduce using rule 41 (expressao -> name .)
+    MENORIGUAL      reduce using rule 41 (expressao -> name .)
+    DIFERENTE       reduce using rule 41 (expressao -> name .)
+    ELOGICO         reduce using rule 41 (expressao -> name .)
+    OULOGICO        reduce using rule 41 (expressao -> name .)
+    ;               reduce using rule 41 (expressao -> name .)
 
 
 state 56
 
-    (24) comando_entrada -> LER ( NAME . ) ;
+    (22) comando_enquanto -> ENQUANTO ( expressao . ) { comando }
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
 
-    )               shift and go to state 78
+    )               shift and go to state 79
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+    >               shift and go to state 69
+    <               shift and go to state 70
+    IGUAL           shift and go to state 71
+    MAIORIGUAL      shift and go to state 72
+    MENORIGUAL      shift and go to state 73
+    DIFERENTE       shift and go to state 74
+    ELOGICO         shift and go to state 75
+    OULOGICO        shift and go to state 76
 
 
 state 57
 
-    (25) comando_saida -> ESCREVER ( CHAR . ) ;
-    (43) expressao -> CHAR .
+    (23) comando_atribuicao -> name = expressao . ;
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
 
-  ! shift/reduce conflict for ) resolved as shift
-    )               shift and go to state 79
-    +               reduce using rule 43 (expressao -> CHAR .)
-    -               reduce using rule 43 (expressao -> CHAR .)
-    *               reduce using rule 43 (expressao -> CHAR .)
-    /               reduce using rule 43 (expressao -> CHAR .)
-    >               reduce using rule 43 (expressao -> CHAR .)
-    <               reduce using rule 43 (expressao -> CHAR .)
-    IGUAL           reduce using rule 43 (expressao -> CHAR .)
-    MAIORIGUAL      reduce using rule 43 (expressao -> CHAR .)
-    MENORIGUAL      reduce using rule 43 (expressao -> CHAR .)
-    DIFERENTE       reduce using rule 43 (expressao -> CHAR .)
-    ELOGICO         reduce using rule 43 (expressao -> CHAR .)
-    OULOGICO        reduce using rule 43 (expressao -> CHAR .)
-
-  ! )               [ reduce using rule 43 (expressao -> CHAR .) ]
+    ;               shift and go to state 80
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+    >               shift and go to state 69
+    <               shift and go to state 70
+    IGUAL           shift and go to state 71
+    MAIORIGUAL      shift and go to state 72
+    MENORIGUAL      shift and go to state 73
+    DIFERENTE       shift and go to state 74
+    ELOGICO         shift and go to state 75
+    OULOGICO        shift and go to state 76
 
 
 state 58
 
-    (26) comando_saida -> ESCREVER ( expressao . ) ;
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
+    (44) comando_entrada -> LER ( NAME . ) ;
 
-    )               shift and go to state 80
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-    >               shift and go to state 68
-    <               shift and go to state 69
-    IGUAL           shift and go to state 70
-    MAIORIGUAL      shift and go to state 71
-    MENORIGUAL      shift and go to state 72
-    DIFERENTE       shift and go to state 73
-    ELOGICO         shift and go to state 74
-    OULOGICO        shift and go to state 75
+    )               shift and go to state 81
 
 
 state 59
 
-    (27) comando_saida -> ESCREVER ( NAME . ) ;
-    (45) name -> NAME .
+    (45) comando_saida -> ESCREVER ( CHAR . ) ;
+    (40) expressao -> CHAR .
 
   ! shift/reduce conflict for ) resolved as shift
-    )               shift and go to state 81
-    +               reduce using rule 45 (name -> NAME .)
-    -               reduce using rule 45 (name -> NAME .)
-    *               reduce using rule 45 (name -> NAME .)
-    /               reduce using rule 45 (name -> NAME .)
-    >               reduce using rule 45 (name -> NAME .)
-    <               reduce using rule 45 (name -> NAME .)
-    IGUAL           reduce using rule 45 (name -> NAME .)
-    MAIORIGUAL      reduce using rule 45 (name -> NAME .)
-    MENORIGUAL      reduce using rule 45 (name -> NAME .)
-    DIFERENTE       reduce using rule 45 (name -> NAME .)
-    ELOGICO         reduce using rule 45 (name -> NAME .)
-    OULOGICO        reduce using rule 45 (name -> NAME .)
+    )               shift and go to state 82
+    +               reduce using rule 40 (expressao -> CHAR .)
+    -               reduce using rule 40 (expressao -> CHAR .)
+    *               reduce using rule 40 (expressao -> CHAR .)
+    /               reduce using rule 40 (expressao -> CHAR .)
+    >               reduce using rule 40 (expressao -> CHAR .)
+    <               reduce using rule 40 (expressao -> CHAR .)
+    IGUAL           reduce using rule 40 (expressao -> CHAR .)
+    MAIORIGUAL      reduce using rule 40 (expressao -> CHAR .)
+    MENORIGUAL      reduce using rule 40 (expressao -> CHAR .)
+    DIFERENTE       reduce using rule 40 (expressao -> CHAR .)
+    ELOGICO         reduce using rule 40 (expressao -> CHAR .)
+    OULOGICO        reduce using rule 40 (expressao -> CHAR .)
 
-  ! )               [ reduce using rule 45 (name -> NAME .) ]
+  ! )               [ reduce using rule 40 (expressao -> CHAR .) ]
 
 
 state 60
 
-    (7) lista_n -> , NAME . lista_n
-    (7) lista_n -> . , NAME lista_n
-    (8) lista_n -> . vazio
-    (49) vazio -> .
+    (46) comando_saida -> ESCREVER ( expressao . ) ;
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
 
-    ,               shift and go to state 45
-    ;               reduce using rule 49 (vazio -> .)
+    )               shift and go to state 83
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+    >               shift and go to state 69
+    <               shift and go to state 70
+    IGUAL           shift and go to state 71
+    MAIORIGUAL      shift and go to state 72
+    MENORIGUAL      shift and go to state 73
+    DIFERENTE       shift and go to state 74
+    ELOGICO         shift and go to state 75
+    OULOGICO        shift and go to state 76
 
-    lista_n                        shift and go to state 82
-    vazio                          shift and go to state 46
 
 state 61
 
-    (19) comando_se -> aumenta_tab SE ( expressao . ) { comando } diminui_tab senao
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
+    (47) comando_saida -> ESCREVER ( name . ) ;
+    (41) expressao -> name .
 
-    )               shift and go to state 83
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-    >               shift and go to state 68
-    <               shift and go to state 69
-    IGUAL           shift and go to state 70
-    MAIORIGUAL      shift and go to state 71
-    MENORIGUAL      shift and go to state 72
-    DIFERENTE       shift and go to state 73
-    ELOGICO         shift and go to state 74
-    OULOGICO        shift and go to state 75
+  ! shift/reduce conflict for ) resolved as shift
+    )               shift and go to state 84
+    +               reduce using rule 41 (expressao -> name .)
+    -               reduce using rule 41 (expressao -> name .)
+    *               reduce using rule 41 (expressao -> name .)
+    /               reduce using rule 41 (expressao -> name .)
+    >               reduce using rule 41 (expressao -> name .)
+    <               reduce using rule 41 (expressao -> name .)
+    IGUAL           reduce using rule 41 (expressao -> name .)
+    MAIORIGUAL      reduce using rule 41 (expressao -> name .)
+    MENORIGUAL      reduce using rule 41 (expressao -> name .)
+    DIFERENTE       reduce using rule 41 (expressao -> name .)
+    ELOGICO         reduce using rule 41 (expressao -> name .)
+    OULOGICO        reduce using rule 41 (expressao -> name .)
+
+  ! )               [ reduce using rule 41 (expressao -> name .) ]
 
 
 state 62
 
-    (22) comando_enquanto -> aumenta_tab ENQUANTO ( expressao . ) { comando } diminui_tab
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
+    (7) lista_n -> , NAME . lista_n
+    (7) lista_n -> . , NAME lista_n
+    (8) lista_n -> . vazio
+    (48) vazio -> .
 
-    )               shift and go to state 84
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-    >               shift and go to state 68
-    <               shift and go to state 69
-    IGUAL           shift and go to state 70
-    MAIORIGUAL      shift and go to state 71
-    MENORIGUAL      shift and go to state 72
-    DIFERENTE       shift and go to state 73
-    ELOGICO         shift and go to state 74
-    OULOGICO        shift and go to state 75
+    ,               shift and go to state 46
+    ;               reduce using rule 48 (vazio -> .)
 
+    lista_n                        shift and go to state 85
+    vazio                          shift and go to state 47
 
 state 63
 
-    (23) comando_atribuicao -> name = expressao ; .
+    (36) expressao -> ( expressao . )
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
 
-    LER             reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
-    ESCREVER        reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
-    NAME            reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
-    SE              reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
-    ENQUANTO        reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
-    }               reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
+    )               shift and go to state 86
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+    >               shift and go to state 69
+    <               shift and go to state 70
+    IGUAL           shift and go to state 71
+    MAIORIGUAL      shift and go to state 72
+    MENORIGUAL      shift and go to state 73
+    DIFERENTE       shift and go to state 74
+    ELOGICO         shift and go to state 75
+    OULOGICO        shift and go to state 76
 
 
 state 64
 
-    (28) expressao -> expressao + . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (19) comando_se -> SE ( expressao ) . { comando } senao
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    {               shift and go to state 87
 
-    expressao                      shift and go to state 85
-    name                           shift and go to state 49
 
 state 65
 
-    (29) expressao -> expressao - . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (24) expressao -> expressao + . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 86
-    name                           shift and go to state 49
+    expressao                      shift and go to state 88
+    name                           shift and go to state 55
 
 state 66
 
-    (30) expressao -> expressao * . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (25) expressao -> expressao - . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 87
-    name                           shift and go to state 49
+    expressao                      shift and go to state 89
+    name                           shift and go to state 55
 
 state 67
 
-    (31) expressao -> expressao / . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (26) expressao -> expressao * . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 88
-    name                           shift and go to state 49
+    expressao                      shift and go to state 90
+    name                           shift and go to state 55
 
 state 68
 
-    (32) expressao -> expressao > . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (27) expressao -> expressao / . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 89
-    name                           shift and go to state 49
+    expressao                      shift and go to state 91
+    name                           shift and go to state 55
 
 state 69
 
-    (33) expressao -> expressao < . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (28) expressao -> expressao > . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 90
-    name                           shift and go to state 49
+    expressao                      shift and go to state 92
+    name                           shift and go to state 55
 
 state 70
 
-    (34) expressao -> expressao IGUAL . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (29) expressao -> expressao < . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 91
-    name                           shift and go to state 49
+    expressao                      shift and go to state 93
+    name                           shift and go to state 55
 
 state 71
 
-    (35) expressao -> expressao MAIORIGUAL . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (30) expressao -> expressao IGUAL . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 92
-    name                           shift and go to state 49
+    expressao                      shift and go to state 94
+    name                           shift and go to state 55
 
 state 72
 
-    (36) expressao -> expressao MENORIGUAL . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (31) expressao -> expressao MAIORIGUAL . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 93
-    name                           shift and go to state 49
+    expressao                      shift and go to state 95
+    name                           shift and go to state 55
 
 state 73
 
-    (37) expressao -> expressao DIFERENTE . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (32) expressao -> expressao MENORIGUAL . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 94
-    name                           shift and go to state 49
+    expressao                      shift and go to state 96
+    name                           shift and go to state 55
 
 state 74
 
-    (38) expressao -> expressao ELOGICO . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (33) expressao -> expressao DIFERENTE . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 95
-    name                           shift and go to state 49
+    expressao                      shift and go to state 97
+    name                           shift and go to state 55
 
 state 75
 
-    (39) expressao -> expressao OULOGICO . expressao
-    (28) expressao -> . expressao + expressao
-    (29) expressao -> . expressao - expressao
-    (30) expressao -> . expressao * expressao
-    (31) expressao -> . expressao / expressao
-    (32) expressao -> . expressao > expressao
-    (33) expressao -> . expressao < expressao
-    (34) expressao -> . expressao IGUAL expressao
-    (35) expressao -> . expressao MAIORIGUAL expressao
-    (36) expressao -> . expressao MENORIGUAL expressao
-    (37) expressao -> . expressao DIFERENTE expressao
-    (38) expressao -> . expressao ELOGICO expressao
-    (39) expressao -> . expressao OULOGICO expressao
-    (40) expressao -> . ( expressao )
-    (41) expressao -> . INTEIRO
-    (42) expressao -> . REAL
-    (43) expressao -> . CHAR
-    (44) expressao -> . name
-    (46) expressao -> . - expressao
-    (45) name -> . NAME
+    (34) expressao -> expressao ELOGICO . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    (               shift and go to state 52
-    INTEIRO         shift and go to state 53
-    REAL            shift and go to state 54
-    CHAR            shift and go to state 55
-    -               shift and go to state 51
-    NAME            shift and go to state 26
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-    expressao                      shift and go to state 96
-    name                           shift and go to state 49
+    expressao                      shift and go to state 98
+    name                           shift and go to state 55
 
 state 76
 
-    (46) expressao -> - expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
+    (35) expressao -> expressao OULOGICO . expressao
+    (24) expressao -> . expressao + expressao
+    (25) expressao -> . expressao - expressao
+    (26) expressao -> . expressao * expressao
+    (27) expressao -> . expressao / expressao
+    (28) expressao -> . expressao > expressao
+    (29) expressao -> . expressao < expressao
+    (30) expressao -> . expressao IGUAL expressao
+    (31) expressao -> . expressao MAIORIGUAL expressao
+    (32) expressao -> . expressao MENORIGUAL expressao
+    (33) expressao -> . expressao DIFERENTE expressao
+    (34) expressao -> . expressao ELOGICO expressao
+    (35) expressao -> . expressao OULOGICO expressao
+    (36) expressao -> . ( expressao )
+    (37) expressao -> . ! expressao
+    (38) expressao -> . INTEIRO
+    (39) expressao -> . REAL
+    (40) expressao -> . CHAR
+    (41) expressao -> . name
+    (42) expressao -> . - expressao
+    (43) name -> . NAME
 
-    ;               reduce using rule 46 (expressao -> - expressao .)
-    +               reduce using rule 46 (expressao -> - expressao .)
-    -               reduce using rule 46 (expressao -> - expressao .)
-    *               reduce using rule 46 (expressao -> - expressao .)
-    /               reduce using rule 46 (expressao -> - expressao .)
-    >               reduce using rule 46 (expressao -> - expressao .)
-    <               reduce using rule 46 (expressao -> - expressao .)
-    IGUAL           reduce using rule 46 (expressao -> - expressao .)
-    MAIORIGUAL      reduce using rule 46 (expressao -> - expressao .)
-    MENORIGUAL      reduce using rule 46 (expressao -> - expressao .)
-    DIFERENTE       reduce using rule 46 (expressao -> - expressao .)
-    ELOGICO         reduce using rule 46 (expressao -> - expressao .)
-    OULOGICO        reduce using rule 46 (expressao -> - expressao .)
-    )               reduce using rule 46 (expressao -> - expressao .)
+    (               shift and go to state 48
+    !               shift and go to state 51
+    INTEIRO         shift and go to state 52
+    REAL            shift and go to state 53
+    CHAR            shift and go to state 54
+    -               shift and go to state 50
+    NAME            shift and go to state 27
 
-  ! +               [ shift and go to state 64 ]
-  ! -               [ shift and go to state 65 ]
-  ! *               [ shift and go to state 66 ]
-  ! /               [ shift and go to state 67 ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
+    expressao                      shift and go to state 99
+    name                           shift and go to state 55
 
 state 77
 
-    (40) expressao -> ( expressao . )
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
+    (42) expressao -> - expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
 
-    )               shift and go to state 97
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-    >               shift and go to state 68
-    <               shift and go to state 69
-    IGUAL           shift and go to state 70
-    MAIORIGUAL      shift and go to state 71
-    MENORIGUAL      shift and go to state 72
-    DIFERENTE       shift and go to state 73
-    ELOGICO         shift and go to state 74
-    OULOGICO        shift and go to state 75
+    )               reduce using rule 42 (expressao -> - expressao .)
+    +               reduce using rule 42 (expressao -> - expressao .)
+    -               reduce using rule 42 (expressao -> - expressao .)
+    *               reduce using rule 42 (expressao -> - expressao .)
+    /               reduce using rule 42 (expressao -> - expressao .)
+    >               reduce using rule 42 (expressao -> - expressao .)
+    <               reduce using rule 42 (expressao -> - expressao .)
+    IGUAL           reduce using rule 42 (expressao -> - expressao .)
+    MAIORIGUAL      reduce using rule 42 (expressao -> - expressao .)
+    MENORIGUAL      reduce using rule 42 (expressao -> - expressao .)
+    DIFERENTE       reduce using rule 42 (expressao -> - expressao .)
+    ELOGICO         reduce using rule 42 (expressao -> - expressao .)
+    OULOGICO        reduce using rule 42 (expressao -> - expressao .)
+    ;               reduce using rule 42 (expressao -> - expressao .)
+
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
+  ! *               [ shift and go to state 67 ]
+  ! /               [ shift and go to state 68 ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
 
 
 state 78
 
-    (24) comando_entrada -> LER ( NAME ) . ;
+    (37) expressao -> ! expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
 
-    ;               shift and go to state 98
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+  ! shift/reduce conflict for * resolved as shift
+  ! shift/reduce conflict for / resolved as shift
+  ! shift/reduce conflict for > resolved as shift
+  ! shift/reduce conflict for < resolved as shift
+  ! shift/reduce conflict for IGUAL resolved as shift
+  ! shift/reduce conflict for MAIORIGUAL resolved as shift
+  ! shift/reduce conflict for MENORIGUAL resolved as shift
+  ! shift/reduce conflict for DIFERENTE resolved as shift
+  ! shift/reduce conflict for ELOGICO resolved as shift
+  ! shift/reduce conflict for OULOGICO resolved as shift
+    )               reduce using rule 37 (expressao -> ! expressao .)
+    ;               reduce using rule 37 (expressao -> ! expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+    >               shift and go to state 69
+    <               shift and go to state 70
+    IGUAL           shift and go to state 71
+    MAIORIGUAL      shift and go to state 72
+    MENORIGUAL      shift and go to state 73
+    DIFERENTE       shift and go to state 74
+    ELOGICO         shift and go to state 75
+    OULOGICO        shift and go to state 76
+
+  ! +               [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! -               [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! *               [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! /               [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! >               [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! <               [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! IGUAL           [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! MAIORIGUAL      [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! MENORIGUAL      [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! DIFERENTE       [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! ELOGICO         [ reduce using rule 37 (expressao -> ! expressao .) ]
+  ! OULOGICO        [ reduce using rule 37 (expressao -> ! expressao .) ]
 
 
 state 79
 
-    (25) comando_saida -> ESCREVER ( CHAR ) . ;
+    (22) comando_enquanto -> ENQUANTO ( expressao ) . { comando }
 
-    ;               shift and go to state 99
+    {               shift and go to state 100
 
 
 state 80
 
-    (26) comando_saida -> ESCREVER ( expressao ) . ;
+    (23) comando_atribuicao -> name = expressao ; .
 
-    ;               shift and go to state 100
+    SE              reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
+    ENQUANTO        reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
+    LER             reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
+    ESCREVER        reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
+    NAME            reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
+    }               reduce using rule 23 (comando_atribuicao -> name = expressao ; .)
 
 
 state 81
 
-    (27) comando_saida -> ESCREVER ( NAME ) . ;
+    (44) comando_entrada -> LER ( NAME ) . ;
 
     ;               shift and go to state 101
 
 
 state 82
 
+    (45) comando_saida -> ESCREVER ( CHAR ) . ;
+
+    ;               shift and go to state 102
+
+
+state 83
+
+    (46) comando_saida -> ESCREVER ( expressao ) . ;
+
+    ;               shift and go to state 103
+
+
+state 84
+
+    (47) comando_saida -> ESCREVER ( name ) . ;
+
+    ;               shift and go to state 104
+
+
+state 85
+
     (7) lista_n -> , NAME lista_n .
 
     ;               reduce using rule 7 (lista_n -> , NAME lista_n .)
 
 
-state 83
-
-    (19) comando_se -> aumenta_tab SE ( expressao ) . { comando } diminui_tab senao
-
-    {               shift and go to state 102
-
-
-state 84
-
-    (22) comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) . { comando } diminui_tab
-
-    {               shift and go to state 103
-
-
-state 85
-
-    (28) expressao -> expressao + expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 28 (expressao -> expressao + expressao .)
-    +               reduce using rule 28 (expressao -> expressao + expressao .)
-    -               reduce using rule 28 (expressao -> expressao + expressao .)
-    >               reduce using rule 28 (expressao -> expressao + expressao .)
-    <               reduce using rule 28 (expressao -> expressao + expressao .)
-    IGUAL           reduce using rule 28 (expressao -> expressao + expressao .)
-    MAIORIGUAL      reduce using rule 28 (expressao -> expressao + expressao .)
-    MENORIGUAL      reduce using rule 28 (expressao -> expressao + expressao .)
-    DIFERENTE       reduce using rule 28 (expressao -> expressao + expressao .)
-    ELOGICO         reduce using rule 28 (expressao -> expressao + expressao .)
-    OULOGICO        reduce using rule 28 (expressao -> expressao + expressao .)
-    )               reduce using rule 28 (expressao -> expressao + expressao .)
-    *               shift and go to state 66
-    /               shift and go to state 67
-
-  ! *               [ reduce using rule 28 (expressao -> expressao + expressao .) ]
-  ! /               [ reduce using rule 28 (expressao -> expressao + expressao .) ]
-  ! +               [ shift and go to state 64 ]
-  ! -               [ shift and go to state 65 ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
 state 86
 
-    (29) expressao -> expressao - expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
+    (36) expressao -> ( expressao ) .
 
-    ;               reduce using rule 29 (expressao -> expressao - expressao .)
-    +               reduce using rule 29 (expressao -> expressao - expressao .)
-    -               reduce using rule 29 (expressao -> expressao - expressao .)
-    >               reduce using rule 29 (expressao -> expressao - expressao .)
-    <               reduce using rule 29 (expressao -> expressao - expressao .)
-    IGUAL           reduce using rule 29 (expressao -> expressao - expressao .)
-    MAIORIGUAL      reduce using rule 29 (expressao -> expressao - expressao .)
-    MENORIGUAL      reduce using rule 29 (expressao -> expressao - expressao .)
-    DIFERENTE       reduce using rule 29 (expressao -> expressao - expressao .)
-    ELOGICO         reduce using rule 29 (expressao -> expressao - expressao .)
-    OULOGICO        reduce using rule 29 (expressao -> expressao - expressao .)
-    )               reduce using rule 29 (expressao -> expressao - expressao .)
-    *               shift and go to state 66
-    /               shift and go to state 67
-
-  ! *               [ reduce using rule 29 (expressao -> expressao - expressao .) ]
-  ! /               [ reduce using rule 29 (expressao -> expressao - expressao .) ]
-  ! +               [ shift and go to state 64 ]
-  ! -               [ shift and go to state 65 ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
+    )               reduce using rule 36 (expressao -> ( expressao ) .)
+    +               reduce using rule 36 (expressao -> ( expressao ) .)
+    -               reduce using rule 36 (expressao -> ( expressao ) .)
+    *               reduce using rule 36 (expressao -> ( expressao ) .)
+    /               reduce using rule 36 (expressao -> ( expressao ) .)
+    >               reduce using rule 36 (expressao -> ( expressao ) .)
+    <               reduce using rule 36 (expressao -> ( expressao ) .)
+    IGUAL           reduce using rule 36 (expressao -> ( expressao ) .)
+    MAIORIGUAL      reduce using rule 36 (expressao -> ( expressao ) .)
+    MENORIGUAL      reduce using rule 36 (expressao -> ( expressao ) .)
+    DIFERENTE       reduce using rule 36 (expressao -> ( expressao ) .)
+    ELOGICO         reduce using rule 36 (expressao -> ( expressao ) .)
+    OULOGICO        reduce using rule 36 (expressao -> ( expressao ) .)
+    ;               reduce using rule 36 (expressao -> ( expressao ) .)
 
 
 state 87
 
-    (30) expressao -> expressao * expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 30 (expressao -> expressao * expressao .)
-    +               reduce using rule 30 (expressao -> expressao * expressao .)
-    -               reduce using rule 30 (expressao -> expressao * expressao .)
-    *               reduce using rule 30 (expressao -> expressao * expressao .)
-    /               reduce using rule 30 (expressao -> expressao * expressao .)
-    >               reduce using rule 30 (expressao -> expressao * expressao .)
-    <               reduce using rule 30 (expressao -> expressao * expressao .)
-    IGUAL           reduce using rule 30 (expressao -> expressao * expressao .)
-    MAIORIGUAL      reduce using rule 30 (expressao -> expressao * expressao .)
-    MENORIGUAL      reduce using rule 30 (expressao -> expressao * expressao .)
-    DIFERENTE       reduce using rule 30 (expressao -> expressao * expressao .)
-    ELOGICO         reduce using rule 30 (expressao -> expressao * expressao .)
-    OULOGICO        reduce using rule 30 (expressao -> expressao * expressao .)
-    )               reduce using rule 30 (expressao -> expressao * expressao .)
-
-  ! +               [ shift and go to state 64 ]
-  ! -               [ shift and go to state 65 ]
-  ! *               [ shift and go to state 66 ]
-  ! /               [ shift and go to state 67 ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 88
-
-    (31) expressao -> expressao / expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 31 (expressao -> expressao / expressao .)
-    +               reduce using rule 31 (expressao -> expressao / expressao .)
-    -               reduce using rule 31 (expressao -> expressao / expressao .)
-    *               reduce using rule 31 (expressao -> expressao / expressao .)
-    /               reduce using rule 31 (expressao -> expressao / expressao .)
-    >               reduce using rule 31 (expressao -> expressao / expressao .)
-    <               reduce using rule 31 (expressao -> expressao / expressao .)
-    IGUAL           reduce using rule 31 (expressao -> expressao / expressao .)
-    MAIORIGUAL      reduce using rule 31 (expressao -> expressao / expressao .)
-    MENORIGUAL      reduce using rule 31 (expressao -> expressao / expressao .)
-    DIFERENTE       reduce using rule 31 (expressao -> expressao / expressao .)
-    ELOGICO         reduce using rule 31 (expressao -> expressao / expressao .)
-    OULOGICO        reduce using rule 31 (expressao -> expressao / expressao .)
-    )               reduce using rule 31 (expressao -> expressao / expressao .)
-
-  ! +               [ shift and go to state 64 ]
-  ! -               [ shift and go to state 65 ]
-  ! *               [ shift and go to state 66 ]
-  ! /               [ shift and go to state 67 ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 89
-
-    (32) expressao -> expressao > expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 32 (expressao -> expressao > expressao .)
-    >               reduce using rule 32 (expressao -> expressao > expressao .)
-    <               reduce using rule 32 (expressao -> expressao > expressao .)
-    IGUAL           reduce using rule 32 (expressao -> expressao > expressao .)
-    MAIORIGUAL      reduce using rule 32 (expressao -> expressao > expressao .)
-    MENORIGUAL      reduce using rule 32 (expressao -> expressao > expressao .)
-    DIFERENTE       reduce using rule 32 (expressao -> expressao > expressao .)
-    ELOGICO         reduce using rule 32 (expressao -> expressao > expressao .)
-    OULOGICO        reduce using rule 32 (expressao -> expressao > expressao .)
-    )               reduce using rule 32 (expressao -> expressao > expressao .)
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-
-  ! +               [ reduce using rule 32 (expressao -> expressao > expressao .) ]
-  ! -               [ reduce using rule 32 (expressao -> expressao > expressao .) ]
-  ! *               [ reduce using rule 32 (expressao -> expressao > expressao .) ]
-  ! /               [ reduce using rule 32 (expressao -> expressao > expressao .) ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 90
-
-    (33) expressao -> expressao < expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 33 (expressao -> expressao < expressao .)
-    >               reduce using rule 33 (expressao -> expressao < expressao .)
-    <               reduce using rule 33 (expressao -> expressao < expressao .)
-    IGUAL           reduce using rule 33 (expressao -> expressao < expressao .)
-    MAIORIGUAL      reduce using rule 33 (expressao -> expressao < expressao .)
-    MENORIGUAL      reduce using rule 33 (expressao -> expressao < expressao .)
-    DIFERENTE       reduce using rule 33 (expressao -> expressao < expressao .)
-    ELOGICO         reduce using rule 33 (expressao -> expressao < expressao .)
-    OULOGICO        reduce using rule 33 (expressao -> expressao < expressao .)
-    )               reduce using rule 33 (expressao -> expressao < expressao .)
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-
-  ! +               [ reduce using rule 33 (expressao -> expressao < expressao .) ]
-  ! -               [ reduce using rule 33 (expressao -> expressao < expressao .) ]
-  ! *               [ reduce using rule 33 (expressao -> expressao < expressao .) ]
-  ! /               [ reduce using rule 33 (expressao -> expressao < expressao .) ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 91
-
-    (34) expressao -> expressao IGUAL expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    >               reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    <               reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    IGUAL           reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    MAIORIGUAL      reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    MENORIGUAL      reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    DIFERENTE       reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    ELOGICO         reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    OULOGICO        reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    )               reduce using rule 34 (expressao -> expressao IGUAL expressao .)
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-
-  ! +               [ reduce using rule 34 (expressao -> expressao IGUAL expressao .) ]
-  ! -               [ reduce using rule 34 (expressao -> expressao IGUAL expressao .) ]
-  ! *               [ reduce using rule 34 (expressao -> expressao IGUAL expressao .) ]
-  ! /               [ reduce using rule 34 (expressao -> expressao IGUAL expressao .) ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 92
-
-    (35) expressao -> expressao MAIORIGUAL expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    >               reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    <               reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    IGUAL           reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    MAIORIGUAL      reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    MENORIGUAL      reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    DIFERENTE       reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    ELOGICO         reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    OULOGICO        reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    )               reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .)
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-
-  ! +               [ reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .) ]
-  ! -               [ reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .) ]
-  ! *               [ reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .) ]
-  ! /               [ reduce using rule 35 (expressao -> expressao MAIORIGUAL expressao .) ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 93
-
-    (36) expressao -> expressao MENORIGUAL expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    >               reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    <               reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    IGUAL           reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    MAIORIGUAL      reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    MENORIGUAL      reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    DIFERENTE       reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    ELOGICO         reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    OULOGICO        reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    )               reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .)
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-
-  ! +               [ reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .) ]
-  ! -               [ reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .) ]
-  ! *               [ reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .) ]
-  ! /               [ reduce using rule 36 (expressao -> expressao MENORIGUAL expressao .) ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 94
-
-    (37) expressao -> expressao DIFERENTE expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    >               reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    <               reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    IGUAL           reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    MAIORIGUAL      reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    MENORIGUAL      reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    DIFERENTE       reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    ELOGICO         reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    OULOGICO        reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    )               reduce using rule 37 (expressao -> expressao DIFERENTE expressao .)
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-
-  ! +               [ reduce using rule 37 (expressao -> expressao DIFERENTE expressao .) ]
-  ! -               [ reduce using rule 37 (expressao -> expressao DIFERENTE expressao .) ]
-  ! *               [ reduce using rule 37 (expressao -> expressao DIFERENTE expressao .) ]
-  ! /               [ reduce using rule 37 (expressao -> expressao DIFERENTE expressao .) ]
-  ! >               [ shift and go to state 68 ]
-  ! <               [ shift and go to state 69 ]
-  ! IGUAL           [ shift and go to state 70 ]
-  ! MAIORIGUAL      [ shift and go to state 71 ]
-  ! MENORIGUAL      [ shift and go to state 72 ]
-  ! DIFERENTE       [ shift and go to state 73 ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 95
-
-    (38) expressao -> expressao ELOGICO expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 38 (expressao -> expressao ELOGICO expressao .)
-    ELOGICO         reduce using rule 38 (expressao -> expressao ELOGICO expressao .)
-    OULOGICO        reduce using rule 38 (expressao -> expressao ELOGICO expressao .)
-    )               reduce using rule 38 (expressao -> expressao ELOGICO expressao .)
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-    >               shift and go to state 68
-    <               shift and go to state 69
-    IGUAL           shift and go to state 70
-    MAIORIGUAL      shift and go to state 71
-    MENORIGUAL      shift and go to state 72
-    DIFERENTE       shift and go to state 73
-
-  ! +               [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! -               [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! *               [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! /               [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! >               [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! <               [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! IGUAL           [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! MAIORIGUAL      [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! MENORIGUAL      [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! DIFERENTE       [ reduce using rule 38 (expressao -> expressao ELOGICO expressao .) ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 96
-
-    (39) expressao -> expressao OULOGICO expressao .
-    (28) expressao -> expressao . + expressao
-    (29) expressao -> expressao . - expressao
-    (30) expressao -> expressao . * expressao
-    (31) expressao -> expressao . / expressao
-    (32) expressao -> expressao . > expressao
-    (33) expressao -> expressao . < expressao
-    (34) expressao -> expressao . IGUAL expressao
-    (35) expressao -> expressao . MAIORIGUAL expressao
-    (36) expressao -> expressao . MENORIGUAL expressao
-    (37) expressao -> expressao . DIFERENTE expressao
-    (38) expressao -> expressao . ELOGICO expressao
-    (39) expressao -> expressao . OULOGICO expressao
-
-    ;               reduce using rule 39 (expressao -> expressao OULOGICO expressao .)
-    ELOGICO         reduce using rule 39 (expressao -> expressao OULOGICO expressao .)
-    OULOGICO        reduce using rule 39 (expressao -> expressao OULOGICO expressao .)
-    )               reduce using rule 39 (expressao -> expressao OULOGICO expressao .)
-    +               shift and go to state 64
-    -               shift and go to state 65
-    *               shift and go to state 66
-    /               shift and go to state 67
-    >               shift and go to state 68
-    <               shift and go to state 69
-    IGUAL           shift and go to state 70
-    MAIORIGUAL      shift and go to state 71
-    MENORIGUAL      shift and go to state 72
-    DIFERENTE       shift and go to state 73
-
-  ! +               [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! -               [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! *               [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! /               [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! >               [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! <               [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! IGUAL           [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! MAIORIGUAL      [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! MENORIGUAL      [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! DIFERENTE       [ reduce using rule 39 (expressao -> expressao OULOGICO expressao .) ]
-  ! ELOGICO         [ shift and go to state 74 ]
-  ! OULOGICO        [ shift and go to state 75 ]
-
-
-state 97
-
-    (40) expressao -> ( expressao ) .
-
-    ;               reduce using rule 40 (expressao -> ( expressao ) .)
-    +               reduce using rule 40 (expressao -> ( expressao ) .)
-    -               reduce using rule 40 (expressao -> ( expressao ) .)
-    *               reduce using rule 40 (expressao -> ( expressao ) .)
-    /               reduce using rule 40 (expressao -> ( expressao ) .)
-    >               reduce using rule 40 (expressao -> ( expressao ) .)
-    <               reduce using rule 40 (expressao -> ( expressao ) .)
-    IGUAL           reduce using rule 40 (expressao -> ( expressao ) .)
-    MAIORIGUAL      reduce using rule 40 (expressao -> ( expressao ) .)
-    MENORIGUAL      reduce using rule 40 (expressao -> ( expressao ) .)
-    DIFERENTE       reduce using rule 40 (expressao -> ( expressao ) .)
-    ELOGICO         reduce using rule 40 (expressao -> ( expressao ) .)
-    OULOGICO        reduce using rule 40 (expressao -> ( expressao ) .)
-    )               reduce using rule 40 (expressao -> ( expressao ) .)
-
-
-state 98
-
-    (24) comando_entrada -> LER ( NAME ) ; .
-
-    LER             reduce using rule 24 (comando_entrada -> LER ( NAME ) ; .)
-    ESCREVER        reduce using rule 24 (comando_entrada -> LER ( NAME ) ; .)
-    NAME            reduce using rule 24 (comando_entrada -> LER ( NAME ) ; .)
-    SE              reduce using rule 24 (comando_entrada -> LER ( NAME ) ; .)
-    ENQUANTO        reduce using rule 24 (comando_entrada -> LER ( NAME ) ; .)
-    }               reduce using rule 24 (comando_entrada -> LER ( NAME ) ; .)
-
-
-state 99
-
-    (25) comando_saida -> ESCREVER ( CHAR ) ; .
-
-    LER             reduce using rule 25 (comando_saida -> ESCREVER ( CHAR ) ; .)
-    ESCREVER        reduce using rule 25 (comando_saida -> ESCREVER ( CHAR ) ; .)
-    NAME            reduce using rule 25 (comando_saida -> ESCREVER ( CHAR ) ; .)
-    SE              reduce using rule 25 (comando_saida -> ESCREVER ( CHAR ) ; .)
-    ENQUANTO        reduce using rule 25 (comando_saida -> ESCREVER ( CHAR ) ; .)
-    }               reduce using rule 25 (comando_saida -> ESCREVER ( CHAR ) ; .)
-
-
-state 100
-
-    (26) comando_saida -> ESCREVER ( expressao ) ; .
-
-    LER             reduce using rule 26 (comando_saida -> ESCREVER ( expressao ) ; .)
-    ESCREVER        reduce using rule 26 (comando_saida -> ESCREVER ( expressao ) ; .)
-    NAME            reduce using rule 26 (comando_saida -> ESCREVER ( expressao ) ; .)
-    SE              reduce using rule 26 (comando_saida -> ESCREVER ( expressao ) ; .)
-    ENQUANTO        reduce using rule 26 (comando_saida -> ESCREVER ( expressao ) ; .)
-    }               reduce using rule 26 (comando_saida -> ESCREVER ( expressao ) ; .)
-
-
-state 101
-
-    (27) comando_saida -> ESCREVER ( NAME ) ; .
-
-    LER             reduce using rule 27 (comando_saida -> ESCREVER ( NAME ) ; .)
-    ESCREVER        reduce using rule 27 (comando_saida -> ESCREVER ( NAME ) ; .)
-    NAME            reduce using rule 27 (comando_saida -> ESCREVER ( NAME ) ; .)
-    SE              reduce using rule 27 (comando_saida -> ESCREVER ( NAME ) ; .)
-    ENQUANTO        reduce using rule 27 (comando_saida -> ESCREVER ( NAME ) ; .)
-    }               reduce using rule 27 (comando_saida -> ESCREVER ( NAME ) ; .)
-
-
-state 102
-
-    (19) comando_se -> aumenta_tab SE ( expressao ) { . comando } diminui_tab senao
+    (19) comando_se -> SE ( expressao ) { . comando } senao
     (13) comando -> . comando_se comando
     (14) comando -> . comando_enquanto comando
     (15) comando -> . comando_atribuicao comando
     (16) comando -> . comando_entrada comando
     (17) comando -> . comando_saida comando
     (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
     (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
 
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
 
-    aumenta_tab                    shift and go to state 23
-    comando                        shift and go to state 104
-    comando_se                     shift and go to state 17
-    comando_enquanto               shift and go to state 18
-    comando_atribuicao             shift and go to state 19
-    comando_entrada                shift and go to state 20
-    comando_saida                  shift and go to state 21
-    vazio                          shift and go to state 22
-    name                           shift and go to state 24
-
-state 103
-
-    (22) comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { . comando } diminui_tab
-    (13) comando -> . comando_se comando
-    (14) comando -> . comando_enquanto comando
-    (15) comando -> . comando_atribuicao comando
-    (16) comando -> . comando_entrada comando
-    (17) comando -> . comando_saida comando
-    (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
-    (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
-
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
-
-    aumenta_tab                    shift and go to state 23
     comando                        shift and go to state 105
     comando_se                     shift and go to state 17
     comando_enquanto               shift and go to state 18
@@ -2378,113 +1856,707 @@ state 103
     comando_entrada                shift and go to state 20
     comando_saida                  shift and go to state 21
     vazio                          shift and go to state 22
-    name                           shift and go to state 24
+    name                           shift and go to state 25
+
+state 88
+
+    (24) expressao -> expressao + expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 24 (expressao -> expressao + expressao .)
+    +               reduce using rule 24 (expressao -> expressao + expressao .)
+    -               reduce using rule 24 (expressao -> expressao + expressao .)
+    >               reduce using rule 24 (expressao -> expressao + expressao .)
+    <               reduce using rule 24 (expressao -> expressao + expressao .)
+    IGUAL           reduce using rule 24 (expressao -> expressao + expressao .)
+    MAIORIGUAL      reduce using rule 24 (expressao -> expressao + expressao .)
+    MENORIGUAL      reduce using rule 24 (expressao -> expressao + expressao .)
+    DIFERENTE       reduce using rule 24 (expressao -> expressao + expressao .)
+    ELOGICO         reduce using rule 24 (expressao -> expressao + expressao .)
+    OULOGICO        reduce using rule 24 (expressao -> expressao + expressao .)
+    ;               reduce using rule 24 (expressao -> expressao + expressao .)
+    *               shift and go to state 67
+    /               shift and go to state 68
+
+  ! *               [ reduce using rule 24 (expressao -> expressao + expressao .) ]
+  ! /               [ reduce using rule 24 (expressao -> expressao + expressao .) ]
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 89
+
+    (25) expressao -> expressao - expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 25 (expressao -> expressao - expressao .)
+    +               reduce using rule 25 (expressao -> expressao - expressao .)
+    -               reduce using rule 25 (expressao -> expressao - expressao .)
+    >               reduce using rule 25 (expressao -> expressao - expressao .)
+    <               reduce using rule 25 (expressao -> expressao - expressao .)
+    IGUAL           reduce using rule 25 (expressao -> expressao - expressao .)
+    MAIORIGUAL      reduce using rule 25 (expressao -> expressao - expressao .)
+    MENORIGUAL      reduce using rule 25 (expressao -> expressao - expressao .)
+    DIFERENTE       reduce using rule 25 (expressao -> expressao - expressao .)
+    ELOGICO         reduce using rule 25 (expressao -> expressao - expressao .)
+    OULOGICO        reduce using rule 25 (expressao -> expressao - expressao .)
+    ;               reduce using rule 25 (expressao -> expressao - expressao .)
+    *               shift and go to state 67
+    /               shift and go to state 68
+
+  ! *               [ reduce using rule 25 (expressao -> expressao - expressao .) ]
+  ! /               [ reduce using rule 25 (expressao -> expressao - expressao .) ]
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 90
+
+    (26) expressao -> expressao * expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 26 (expressao -> expressao * expressao .)
+    +               reduce using rule 26 (expressao -> expressao * expressao .)
+    -               reduce using rule 26 (expressao -> expressao * expressao .)
+    *               reduce using rule 26 (expressao -> expressao * expressao .)
+    /               reduce using rule 26 (expressao -> expressao * expressao .)
+    >               reduce using rule 26 (expressao -> expressao * expressao .)
+    <               reduce using rule 26 (expressao -> expressao * expressao .)
+    IGUAL           reduce using rule 26 (expressao -> expressao * expressao .)
+    MAIORIGUAL      reduce using rule 26 (expressao -> expressao * expressao .)
+    MENORIGUAL      reduce using rule 26 (expressao -> expressao * expressao .)
+    DIFERENTE       reduce using rule 26 (expressao -> expressao * expressao .)
+    ELOGICO         reduce using rule 26 (expressao -> expressao * expressao .)
+    OULOGICO        reduce using rule 26 (expressao -> expressao * expressao .)
+    ;               reduce using rule 26 (expressao -> expressao * expressao .)
+
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
+  ! *               [ shift and go to state 67 ]
+  ! /               [ shift and go to state 68 ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 91
+
+    (27) expressao -> expressao / expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 27 (expressao -> expressao / expressao .)
+    +               reduce using rule 27 (expressao -> expressao / expressao .)
+    -               reduce using rule 27 (expressao -> expressao / expressao .)
+    *               reduce using rule 27 (expressao -> expressao / expressao .)
+    /               reduce using rule 27 (expressao -> expressao / expressao .)
+    >               reduce using rule 27 (expressao -> expressao / expressao .)
+    <               reduce using rule 27 (expressao -> expressao / expressao .)
+    IGUAL           reduce using rule 27 (expressao -> expressao / expressao .)
+    MAIORIGUAL      reduce using rule 27 (expressao -> expressao / expressao .)
+    MENORIGUAL      reduce using rule 27 (expressao -> expressao / expressao .)
+    DIFERENTE       reduce using rule 27 (expressao -> expressao / expressao .)
+    ELOGICO         reduce using rule 27 (expressao -> expressao / expressao .)
+    OULOGICO        reduce using rule 27 (expressao -> expressao / expressao .)
+    ;               reduce using rule 27 (expressao -> expressao / expressao .)
+
+  ! +               [ shift and go to state 65 ]
+  ! -               [ shift and go to state 66 ]
+  ! *               [ shift and go to state 67 ]
+  ! /               [ shift and go to state 68 ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 92
+
+    (28) expressao -> expressao > expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 28 (expressao -> expressao > expressao .)
+    >               reduce using rule 28 (expressao -> expressao > expressao .)
+    <               reduce using rule 28 (expressao -> expressao > expressao .)
+    IGUAL           reduce using rule 28 (expressao -> expressao > expressao .)
+    MAIORIGUAL      reduce using rule 28 (expressao -> expressao > expressao .)
+    MENORIGUAL      reduce using rule 28 (expressao -> expressao > expressao .)
+    DIFERENTE       reduce using rule 28 (expressao -> expressao > expressao .)
+    ELOGICO         reduce using rule 28 (expressao -> expressao > expressao .)
+    OULOGICO        reduce using rule 28 (expressao -> expressao > expressao .)
+    ;               reduce using rule 28 (expressao -> expressao > expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+
+  ! +               [ reduce using rule 28 (expressao -> expressao > expressao .) ]
+  ! -               [ reduce using rule 28 (expressao -> expressao > expressao .) ]
+  ! *               [ reduce using rule 28 (expressao -> expressao > expressao .) ]
+  ! /               [ reduce using rule 28 (expressao -> expressao > expressao .) ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 93
+
+    (29) expressao -> expressao < expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 29 (expressao -> expressao < expressao .)
+    >               reduce using rule 29 (expressao -> expressao < expressao .)
+    <               reduce using rule 29 (expressao -> expressao < expressao .)
+    IGUAL           reduce using rule 29 (expressao -> expressao < expressao .)
+    MAIORIGUAL      reduce using rule 29 (expressao -> expressao < expressao .)
+    MENORIGUAL      reduce using rule 29 (expressao -> expressao < expressao .)
+    DIFERENTE       reduce using rule 29 (expressao -> expressao < expressao .)
+    ELOGICO         reduce using rule 29 (expressao -> expressao < expressao .)
+    OULOGICO        reduce using rule 29 (expressao -> expressao < expressao .)
+    ;               reduce using rule 29 (expressao -> expressao < expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+
+  ! +               [ reduce using rule 29 (expressao -> expressao < expressao .) ]
+  ! -               [ reduce using rule 29 (expressao -> expressao < expressao .) ]
+  ! *               [ reduce using rule 29 (expressao -> expressao < expressao .) ]
+  ! /               [ reduce using rule 29 (expressao -> expressao < expressao .) ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 94
+
+    (30) expressao -> expressao IGUAL expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    >               reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    <               reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    IGUAL           reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    MAIORIGUAL      reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    MENORIGUAL      reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    DIFERENTE       reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    ELOGICO         reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    OULOGICO        reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    ;               reduce using rule 30 (expressao -> expressao IGUAL expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+
+  ! +               [ reduce using rule 30 (expressao -> expressao IGUAL expressao .) ]
+  ! -               [ reduce using rule 30 (expressao -> expressao IGUAL expressao .) ]
+  ! *               [ reduce using rule 30 (expressao -> expressao IGUAL expressao .) ]
+  ! /               [ reduce using rule 30 (expressao -> expressao IGUAL expressao .) ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 95
+
+    (31) expressao -> expressao MAIORIGUAL expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    >               reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    <               reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    IGUAL           reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    MAIORIGUAL      reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    MENORIGUAL      reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    DIFERENTE       reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    ELOGICO         reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    OULOGICO        reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    ;               reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+
+  ! +               [ reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .) ]
+  ! -               [ reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .) ]
+  ! *               [ reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .) ]
+  ! /               [ reduce using rule 31 (expressao -> expressao MAIORIGUAL expressao .) ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 96
+
+    (32) expressao -> expressao MENORIGUAL expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    >               reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    <               reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    IGUAL           reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    MAIORIGUAL      reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    MENORIGUAL      reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    DIFERENTE       reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    ELOGICO         reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    OULOGICO        reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    ;               reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+
+  ! +               [ reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .) ]
+  ! -               [ reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .) ]
+  ! *               [ reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .) ]
+  ! /               [ reduce using rule 32 (expressao -> expressao MENORIGUAL expressao .) ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 97
+
+    (33) expressao -> expressao DIFERENTE expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    >               reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    <               reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    IGUAL           reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    MAIORIGUAL      reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    MENORIGUAL      reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    DIFERENTE       reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    ELOGICO         reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    OULOGICO        reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    ;               reduce using rule 33 (expressao -> expressao DIFERENTE expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+
+  ! +               [ reduce using rule 33 (expressao -> expressao DIFERENTE expressao .) ]
+  ! -               [ reduce using rule 33 (expressao -> expressao DIFERENTE expressao .) ]
+  ! *               [ reduce using rule 33 (expressao -> expressao DIFERENTE expressao .) ]
+  ! /               [ reduce using rule 33 (expressao -> expressao DIFERENTE expressao .) ]
+  ! >               [ shift and go to state 69 ]
+  ! <               [ shift and go to state 70 ]
+  ! IGUAL           [ shift and go to state 71 ]
+  ! MAIORIGUAL      [ shift and go to state 72 ]
+  ! MENORIGUAL      [ shift and go to state 73 ]
+  ! DIFERENTE       [ shift and go to state 74 ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 98
+
+    (34) expressao -> expressao ELOGICO expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 34 (expressao -> expressao ELOGICO expressao .)
+    ELOGICO         reduce using rule 34 (expressao -> expressao ELOGICO expressao .)
+    OULOGICO        reduce using rule 34 (expressao -> expressao ELOGICO expressao .)
+    ;               reduce using rule 34 (expressao -> expressao ELOGICO expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+    >               shift and go to state 69
+    <               shift and go to state 70
+    IGUAL           shift and go to state 71
+    MAIORIGUAL      shift and go to state 72
+    MENORIGUAL      shift and go to state 73
+    DIFERENTE       shift and go to state 74
+
+  ! +               [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! -               [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! *               [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! /               [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! >               [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! <               [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! IGUAL           [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! MAIORIGUAL      [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! MENORIGUAL      [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! DIFERENTE       [ reduce using rule 34 (expressao -> expressao ELOGICO expressao .) ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 99
+
+    (35) expressao -> expressao OULOGICO expressao .
+    (24) expressao -> expressao . + expressao
+    (25) expressao -> expressao . - expressao
+    (26) expressao -> expressao . * expressao
+    (27) expressao -> expressao . / expressao
+    (28) expressao -> expressao . > expressao
+    (29) expressao -> expressao . < expressao
+    (30) expressao -> expressao . IGUAL expressao
+    (31) expressao -> expressao . MAIORIGUAL expressao
+    (32) expressao -> expressao . MENORIGUAL expressao
+    (33) expressao -> expressao . DIFERENTE expressao
+    (34) expressao -> expressao . ELOGICO expressao
+    (35) expressao -> expressao . OULOGICO expressao
+
+    )               reduce using rule 35 (expressao -> expressao OULOGICO expressao .)
+    ELOGICO         reduce using rule 35 (expressao -> expressao OULOGICO expressao .)
+    OULOGICO        reduce using rule 35 (expressao -> expressao OULOGICO expressao .)
+    ;               reduce using rule 35 (expressao -> expressao OULOGICO expressao .)
+    +               shift and go to state 65
+    -               shift and go to state 66
+    *               shift and go to state 67
+    /               shift and go to state 68
+    >               shift and go to state 69
+    <               shift and go to state 70
+    IGUAL           shift and go to state 71
+    MAIORIGUAL      shift and go to state 72
+    MENORIGUAL      shift and go to state 73
+    DIFERENTE       shift and go to state 74
+
+  ! +               [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! -               [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! *               [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! /               [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! >               [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! <               [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! IGUAL           [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! MAIORIGUAL      [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! MENORIGUAL      [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! DIFERENTE       [ reduce using rule 35 (expressao -> expressao OULOGICO expressao .) ]
+  ! ELOGICO         [ shift and go to state 75 ]
+  ! OULOGICO        [ shift and go to state 76 ]
+
+
+state 100
+
+    (22) comando_enquanto -> ENQUANTO ( expressao ) { . comando }
+    (13) comando -> . comando_se comando
+    (14) comando -> . comando_enquanto comando
+    (15) comando -> . comando_atribuicao comando
+    (16) comando -> . comando_entrada comando
+    (17) comando -> . comando_saida comando
+    (18) comando -> . vazio
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
+    (23) comando_atribuicao -> . name = expressao ;
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
+
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
+
+    comando                        shift and go to state 106
+    comando_se                     shift and go to state 17
+    comando_enquanto               shift and go to state 18
+    comando_atribuicao             shift and go to state 19
+    comando_entrada                shift and go to state 20
+    comando_saida                  shift and go to state 21
+    vazio                          shift and go to state 22
+    name                           shift and go to state 25
+
+state 101
+
+    (44) comando_entrada -> LER ( NAME ) ; .
+
+    SE              reduce using rule 44 (comando_entrada -> LER ( NAME ) ; .)
+    ENQUANTO        reduce using rule 44 (comando_entrada -> LER ( NAME ) ; .)
+    LER             reduce using rule 44 (comando_entrada -> LER ( NAME ) ; .)
+    ESCREVER        reduce using rule 44 (comando_entrada -> LER ( NAME ) ; .)
+    NAME            reduce using rule 44 (comando_entrada -> LER ( NAME ) ; .)
+    }               reduce using rule 44 (comando_entrada -> LER ( NAME ) ; .)
+
+
+state 102
+
+    (45) comando_saida -> ESCREVER ( CHAR ) ; .
+
+    SE              reduce using rule 45 (comando_saida -> ESCREVER ( CHAR ) ; .)
+    ENQUANTO        reduce using rule 45 (comando_saida -> ESCREVER ( CHAR ) ; .)
+    LER             reduce using rule 45 (comando_saida -> ESCREVER ( CHAR ) ; .)
+    ESCREVER        reduce using rule 45 (comando_saida -> ESCREVER ( CHAR ) ; .)
+    NAME            reduce using rule 45 (comando_saida -> ESCREVER ( CHAR ) ; .)
+    }               reduce using rule 45 (comando_saida -> ESCREVER ( CHAR ) ; .)
+
+
+state 103
+
+    (46) comando_saida -> ESCREVER ( expressao ) ; .
+
+    SE              reduce using rule 46 (comando_saida -> ESCREVER ( expressao ) ; .)
+    ENQUANTO        reduce using rule 46 (comando_saida -> ESCREVER ( expressao ) ; .)
+    LER             reduce using rule 46 (comando_saida -> ESCREVER ( expressao ) ; .)
+    ESCREVER        reduce using rule 46 (comando_saida -> ESCREVER ( expressao ) ; .)
+    NAME            reduce using rule 46 (comando_saida -> ESCREVER ( expressao ) ; .)
+    }               reduce using rule 46 (comando_saida -> ESCREVER ( expressao ) ; .)
+
 
 state 104
 
-    (19) comando_se -> aumenta_tab SE ( expressao ) { comando . } diminui_tab senao
+    (47) comando_saida -> ESCREVER ( name ) ; .
 
-    }               shift and go to state 106
+    SE              reduce using rule 47 (comando_saida -> ESCREVER ( name ) ; .)
+    ENQUANTO        reduce using rule 47 (comando_saida -> ESCREVER ( name ) ; .)
+    LER             reduce using rule 47 (comando_saida -> ESCREVER ( name ) ; .)
+    ESCREVER        reduce using rule 47 (comando_saida -> ESCREVER ( name ) ; .)
+    NAME            reduce using rule 47 (comando_saida -> ESCREVER ( name ) ; .)
+    }               reduce using rule 47 (comando_saida -> ESCREVER ( name ) ; .)
 
 
 state 105
 
-    (22) comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando . } diminui_tab
+    (19) comando_se -> SE ( expressao ) { comando . } senao
 
     }               shift and go to state 107
 
 
 state 106
 
-    (19) comando_se -> aumenta_tab SE ( expressao ) { comando } . diminui_tab senao
-    (48) diminui_tab -> .
+    (22) comando_enquanto -> ENQUANTO ( expressao ) { comando . }
 
-    SENAO           reduce using rule 48 (diminui_tab -> .)
-    LER             reduce using rule 48 (diminui_tab -> .)
-    ESCREVER        reduce using rule 48 (diminui_tab -> .)
-    NAME            reduce using rule 48 (diminui_tab -> .)
-    SE              reduce using rule 48 (diminui_tab -> .)
-    ENQUANTO        reduce using rule 48 (diminui_tab -> .)
-    }               reduce using rule 48 (diminui_tab -> .)
+    }               shift and go to state 108
 
-    diminui_tab                    shift and go to state 108
 
 state 107
 
-    (22) comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } . diminui_tab
-    (48) diminui_tab -> .
+    (19) comando_se -> SE ( expressao ) { comando } . senao
+    (20) senao -> . SENAO { comando }
+    (21) senao -> . vazio
+    (48) vazio -> .
 
-    LER             reduce using rule 48 (diminui_tab -> .)
-    ESCREVER        reduce using rule 48 (diminui_tab -> .)
-    NAME            reduce using rule 48 (diminui_tab -> .)
-    SE              reduce using rule 48 (diminui_tab -> .)
-    ENQUANTO        reduce using rule 48 (diminui_tab -> .)
-    }               reduce using rule 48 (diminui_tab -> .)
+    SENAO           shift and go to state 110
+    SE              reduce using rule 48 (vazio -> .)
+    ENQUANTO        reduce using rule 48 (vazio -> .)
+    LER             reduce using rule 48 (vazio -> .)
+    ESCREVER        reduce using rule 48 (vazio -> .)
+    NAME            reduce using rule 48 (vazio -> .)
+    }               reduce using rule 48 (vazio -> .)
 
-    diminui_tab                    shift and go to state 109
+    senao                          shift and go to state 109
+    vazio                          shift and go to state 111
 
 state 108
 
-    (19) comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab . senao
-    (20) senao -> . SENAO { comando }
-    (21) senao -> . vazio
-    (49) vazio -> .
+    (22) comando_enquanto -> ENQUANTO ( expressao ) { comando } .
 
-    SENAO           shift and go to state 111
-    LER             reduce using rule 49 (vazio -> .)
-    ESCREVER        reduce using rule 49 (vazio -> .)
-    NAME            reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 49 (vazio -> .)
-    ENQUANTO        reduce using rule 49 (vazio -> .)
-    }               reduce using rule 49 (vazio -> .)
+    SE              reduce using rule 22 (comando_enquanto -> ENQUANTO ( expressao ) { comando } .)
+    ENQUANTO        reduce using rule 22 (comando_enquanto -> ENQUANTO ( expressao ) { comando } .)
+    LER             reduce using rule 22 (comando_enquanto -> ENQUANTO ( expressao ) { comando } .)
+    ESCREVER        reduce using rule 22 (comando_enquanto -> ENQUANTO ( expressao ) { comando } .)
+    NAME            reduce using rule 22 (comando_enquanto -> ENQUANTO ( expressao ) { comando } .)
+    }               reduce using rule 22 (comando_enquanto -> ENQUANTO ( expressao ) { comando } .)
 
-    senao                          shift and go to state 110
-    vazio                          shift and go to state 112
 
 state 109
 
-    (22) comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab .
+    (19) comando_se -> SE ( expressao ) { comando } senao .
 
-    LER             reduce using rule 22 (comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab .)
-    ESCREVER        reduce using rule 22 (comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab .)
-    NAME            reduce using rule 22 (comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab .)
-    SE              reduce using rule 22 (comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab .)
-    ENQUANTO        reduce using rule 22 (comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab .)
-    }               reduce using rule 22 (comando_enquanto -> aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab .)
+    SE              reduce using rule 19 (comando_se -> SE ( expressao ) { comando } senao .)
+    ENQUANTO        reduce using rule 19 (comando_se -> SE ( expressao ) { comando } senao .)
+    LER             reduce using rule 19 (comando_se -> SE ( expressao ) { comando } senao .)
+    ESCREVER        reduce using rule 19 (comando_se -> SE ( expressao ) { comando } senao .)
+    NAME            reduce using rule 19 (comando_se -> SE ( expressao ) { comando } senao .)
+    }               reduce using rule 19 (comando_se -> SE ( expressao ) { comando } senao .)
 
 
 state 110
 
-    (19) comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab senao .
+    (20) senao -> SENAO . { comando }
 
-    LER             reduce using rule 19 (comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab senao .)
-    ESCREVER        reduce using rule 19 (comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab senao .)
-    NAME            reduce using rule 19 (comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab senao .)
-    SE              reduce using rule 19 (comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab senao .)
-    ENQUANTO        reduce using rule 19 (comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab senao .)
-    }               reduce using rule 19 (comando_se -> aumenta_tab SE ( expressao ) { comando } diminui_tab senao .)
+    {               shift and go to state 112
 
 
 state 111
 
-    (20) senao -> SENAO . { comando }
-
-    {               shift and go to state 113
-
-
-state 112
-
     (21) senao -> vazio .
 
+    SE              reduce using rule 21 (senao -> vazio .)
+    ENQUANTO        reduce using rule 21 (senao -> vazio .)
     LER             reduce using rule 21 (senao -> vazio .)
     ESCREVER        reduce using rule 21 (senao -> vazio .)
     NAME            reduce using rule 21 (senao -> vazio .)
-    SE              reduce using rule 21 (senao -> vazio .)
-    ENQUANTO        reduce using rule 21 (senao -> vazio .)
     }               reduce using rule 21 (senao -> vazio .)
 
 
-state 113
+state 112
 
     (20) senao -> SENAO { . comando }
     (13) comando -> . comando_se comando
@@ -2493,54 +2565,64 @@ state 113
     (16) comando -> . comando_entrada comando
     (17) comando -> . comando_saida comando
     (18) comando -> . vazio
-    (19) comando_se -> . aumenta_tab SE ( expressao ) { comando } diminui_tab senao
-    (22) comando_enquanto -> . aumenta_tab ENQUANTO ( expressao ) { comando } diminui_tab
+    (19) comando_se -> . SE ( expressao ) { comando } senao
+    (22) comando_enquanto -> . ENQUANTO ( expressao ) { comando }
     (23) comando_atribuicao -> . name = expressao ;
-    (24) comando_entrada -> . LER ( NAME ) ;
-    (25) comando_saida -> . ESCREVER ( CHAR ) ;
-    (26) comando_saida -> . ESCREVER ( expressao ) ;
-    (27) comando_saida -> . ESCREVER ( NAME ) ;
-    (49) vazio -> .
-    (47) aumenta_tab -> .
-    (45) name -> . NAME
+    (44) comando_entrada -> . LER ( NAME ) ;
+    (45) comando_saida -> . ESCREVER ( CHAR ) ;
+    (46) comando_saida -> . ESCREVER ( expressao ) ;
+    (47) comando_saida -> . ESCREVER ( name ) ;
+    (48) vazio -> .
+    (43) name -> . NAME
 
-    LER             shift and go to state 25
-    ESCREVER        shift and go to state 27
-    }               reduce using rule 49 (vazio -> .)
-    SE              reduce using rule 47 (aumenta_tab -> .)
-    ENQUANTO        reduce using rule 47 (aumenta_tab -> .)
-    NAME            shift and go to state 26
+    SE              shift and go to state 23
+    ENQUANTO        shift and go to state 24
+    LER             shift and go to state 26
+    ESCREVER        shift and go to state 28
+    }               reduce using rule 48 (vazio -> .)
+    NAME            shift and go to state 27
 
-    comando                        shift and go to state 114
+    comando                        shift and go to state 113
     comando_se                     shift and go to state 17
     comando_enquanto               shift and go to state 18
     comando_atribuicao             shift and go to state 19
     comando_entrada                shift and go to state 20
     comando_saida                  shift and go to state 21
     vazio                          shift and go to state 22
-    aumenta_tab                    shift and go to state 23
-    name                           shift and go to state 24
+    name                           shift and go to state 25
 
-state 114
+state 113
 
     (20) senao -> SENAO { comando . }
 
-    }               shift and go to state 115
+    }               shift and go to state 114
 
 
-state 115
+state 114
 
     (20) senao -> SENAO { comando } .
 
+    SE              reduce using rule 20 (senao -> SENAO { comando } .)
+    ENQUANTO        reduce using rule 20 (senao -> SENAO { comando } .)
     LER             reduce using rule 20 (senao -> SENAO { comando } .)
     ESCREVER        reduce using rule 20 (senao -> SENAO { comando } .)
     NAME            reduce using rule 20 (senao -> SENAO { comando } .)
-    SE              reduce using rule 20 (senao -> SENAO { comando } .)
-    ENQUANTO        reduce using rule 20 (senao -> SENAO { comando } .)
     }               reduce using rule 20 (senao -> SENAO { comando } .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for ) in state 57 resolved as shift
 WARNING: shift/reduce conflict for ) in state 59 resolved as shift
+WARNING: shift/reduce conflict for ) in state 61 resolved as shift
+WARNING: shift/reduce conflict for + in state 78 resolved as shift
+WARNING: shift/reduce conflict for - in state 78 resolved as shift
+WARNING: shift/reduce conflict for * in state 78 resolved as shift
+WARNING: shift/reduce conflict for / in state 78 resolved as shift
+WARNING: shift/reduce conflict for > in state 78 resolved as shift
+WARNING: shift/reduce conflict for < in state 78 resolved as shift
+WARNING: shift/reduce conflict for IGUAL in state 78 resolved as shift
+WARNING: shift/reduce conflict for MAIORIGUAL in state 78 resolved as shift
+WARNING: shift/reduce conflict for MENORIGUAL in state 78 resolved as shift
+WARNING: shift/reduce conflict for DIFERENTE in state 78 resolved as shift
+WARNING: shift/reduce conflict for ELOGICO in state 78 resolved as shift
+WARNING: shift/reduce conflict for OULOGICO in state 78 resolved as shift

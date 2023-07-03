@@ -14,16 +14,4 @@ lexer.input(codigo)
 from yacc import parser
 
 # Executa o yacc
-result = parser.parse(codigo, lexer=lexer, debug=False,tracking=True)
-
-if result:
-    print("Compilado com sucesso!")
-    print("Resultado:")
-    print(result)
-
-    # Cria o arquivo de saída
-    with open('saida.c', 'w') as file:
-        file.write(str(result))
-
-else:
-    print("Erro de compilacao")
+parser.parse(codigo, lexer=lexer, debug=False,tracking=True)

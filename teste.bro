@@ -4,21 +4,9 @@ nulo principal () {
     char teste1;
     real nota;
 
-    a = 1 + 2;
-    teste = 5 * 6;
-    teste = 7 * 7 / 7 + 8 - (7 + 8);
-    b = 2;
-    c = 3;
-    teste1 = "Deivis";
-    nota = 25.6;
+    a = -3 + -5 * ( 3 + 2 );
 
-    se (b > c) {
-        escrever(a);
-        escrever("teste");
-
-        enquanto(a < 10) {
-            escrever(a);
-            a = a + 1;
-        }
-    }
+    ler(a);
+    escrever(a);
+    escrever(!0);
 }
