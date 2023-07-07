@@ -1,10 +1,14 @@
 # Esse arquivo tem as funções que interpretam o código	
 
+# importa biblioteca de tabelas no terminal
+from tabulate import tabulate
+
 # Clone as variáveis
 variaveis = {}
 
 # Retorna as variáveis
 def getVariaveis():
+    global variaveis
     return variaveis
 
 # Seta as variáveis
@@ -14,8 +18,14 @@ def setVariaveis(variaveis_yacc):
 
 # Printa variáveis
 def printaVariaveis():
+    global variaveis
+    print("Variáveis:")
+    # Printa a tabela com todas as variáveis do diciário
+    # Passa o dificionário para uma lista
+    lista = []
     for variavel in variaveis:
-        print(variavel, variaveis[variavel])
+        lista.append(variaveis[variavel])
+    print(tabulate(lista, headers='keys', tablefmt='psql'))
 
 # Executa conjunto de comandos
 def executaComandos(comandos):
@@ -131,9 +141,9 @@ def printaComando(expressao):
         printaComando(expressao['op1'])
         print(" )", end=" ")
     elif expressao['comando_tipo'] == 'atribuicao':
-        print("( " + expressao['nome'] + " = ", end=" ")
+        print(expressao['nome'] + " = ", end=" ")
         printaComando(expressao['valor'])
-        print(" )")
+        print("")
     elif expressao['comando_tipo'] == 'print':
         print("print ", end=" ")
         printaComando(expressao['valor'])
