@@ -120,16 +120,19 @@ def p_comando(p):
 
 def p_comando_se(p):
     "comando_se : SE '(' expressao ')' '{' comando '}' senao"
-    pass
+    p[0] = { 'tipo': None, 'valor': p[3], 'nome': None, 'comando_tipo': 'se', 'senao': p[8], 'comando': p[6]}
 
 def p_senao(p):
     ''' senao : SENAO '{' comando '}'
               | vazio '''
-    pass
+    if(len(p) > 2):
+        p[0] = p[3]
+    else:
+        p[0] = None
 
 def p_comando_enquanto(p):
     "comando_enquanto : ENQUANTO '(' expressao ')' '{' comando '}'"
-    pass
+    p[0] = { 'tipo': None, 'valor': p[3], 'nome': None, 'comando_tipo': 'enquanto', 'comando': p[6]}
 
 # Atribuição de variável = PRONTO
 def p_comando_atribuicao(p):
@@ -200,7 +203,7 @@ def p_expressao(p):
         if (isinstance(p[1], dict)):
             p[0] = { 'tipo': p[1]['tipo'], 'op1': p[1], 'operador': None, 'comando_tipo': 'variavel'}
         else:
-            p[0] = { 'tipo': type(p[1]).__name__, 'op1': p[1], 'operador': None, 'comando_tipo': 'constante'}
+            p[0] = { 'tipo': mudaTipo(type(p[1]).__name__), 'op1': p[1], 'operador': None, 'comando_tipo': 'constante'}
 
 # Avalia a comando
 def avaliaComando(expressao):
@@ -264,7 +267,39 @@ def avaliaComando(expressao):
             except:
                 valor = '"' + valor + '"'
         variaveis[expressao['nome']] = { 'tipo': expressao['valor']['tipo'], 'valor': valor, 'nome': expressao['nome']}
-    else:
+    elif expressao['comando_tipo'] == 'se':
+        if avaliaComando(expressao['valor']):
+            comando = expressao['comando']
+        elif expressao['senao'] != None:
+            comando = expressao['senao']
+        else:
+            return
+        printaComando(comando[0])
+        avaliaComando(comando[0])
+        print('')
+        repetir = True if comando[1] != None else False
+        while repetir:
+            comando = comando[1]
+            printaComando(comando[0])
+            avaliaComando(comando[0])
+            repetir = True if comando[1] != None else False
+            print('')
+    elif expressao['comando_tipo'] == 'enquanto':
+        while avaliaComando(expressao['valor']):
+            comando = expressao['comando']
+            if comando == None:
+                break
+            printaComando(comando[0])
+            avaliaComando(comando[0])
+            print('')
+            repetir = True if comando[1] != None else False
+            while repetir:
+                comando = comando[1]
+                printaComando(comando[0])
+                avaliaComando(comando[0])
+                repetir = True if comando[1] != None else False
+                print('')
+    elif expressao['comando_tipo'] == 'constante':
         return expressao['op1']
     
 # Printa a comando
@@ -289,15 +324,30 @@ def printaComando(expressao):
     elif expressao['comando_tipo'] == 'atribuicao':
         print("( " + expressao['nome'] + " = ", end=" ")
         printaComando(expressao['valor'])
-        print(" )", end=" ")
+        print(" )")
     elif expressao['comando_tipo'] == 'print':
         print("print ", end=" ")
         printaComando(expressao['valor'])
     elif expressao['comando_tipo'] == 'entrada':
         print("entrada ", end=" ")
         printaComando(expressao['valor'])
-    else:
-        print(str(expressao['op1']), end=" ")
+    elif expressao['comando_tipo'] == 'se':
+        pass
+    elif expressao['comando_tipo'] == 'enquanto':
+        pass
+    elif expressao['comando_tipo'] == 'constante':
+        print(expressao['op1'], end=" ")
+
+# Função muda tipo
+def mudaTipo(tipo):
+    if tipo == 'int':
+        tipo = 'inteiro'
+    if tipo == 'float':
+        tipo = 'real'
+    if tipo == 'str':
+        tipo = 'char'
+    return tipo
+        
 
 # Expressão negativa = PRONTO
 def p_expressao_negativa(p):
