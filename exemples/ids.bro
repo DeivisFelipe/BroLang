@@ -1,0 +1,8 @@
+nulo principal () {
+    real _;
+    real _0;
+    real _____;
+    real _A;
+    real _A9b10;
+    char _A9b10;
+}

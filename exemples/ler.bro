@@ -1,0 +1,8 @@
+nulo principal () {
+    char a;
+
+    escrever("digite uma letra");
+    ler(a);
+
+    /*ler(1);  precisaria fornecer um identificador, gera erro */
+}

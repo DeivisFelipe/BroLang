@@ -21,35 +21,36 @@ precedence = (
 
 # Variáveis
 variaveis = {}
-temporarias = {}
 
 # Declaração inicial
 start = 'programa'
 
-# Programa  = PRONTO
+# Programa
 def p_programa(p):
     "programa : NULO PRINCIPAL '(' ')' '{' codigo '}'"
     p[0] = p[6]
     global variaveis
     setVariaveis(variaveis)
+    # Executa os comandos recebidos da arvore
     executaComandos(p[6])
+    # Printa as variáveis
     variaveis = getVariaveis()
     printaVariaveis()
 
-# Código dentro da função principal = PRONTO
+# Código dentro da função principal
 def p_codigo(p):
     "codigo : dec_variavel comando"
     p[0] = p[2]
 
 
 # DECLARAÇÃO DE VARIÁVEIS
-# Declaração de variáveis, estrutura básica: tipo nome_variavel; tipo nome_variavel; ... = PRONTO
+# Declaração de variáveis, estrutura básica: tipo nome_variavel; tipo nome_variavel; ...
 def p_dec_variavel(p):
     '''dec_variavel : salva_variavel ';' dec_variavel
                     | vazio'''
     pass
 
-# Salva as variáveis na tabela de símbolos = PRONTO
+# Salva as variáveis na tabela de símbolos
 def p_salva_variavel(p):
     '''salva_variavel : tipo lista_nomes'''
     # Salva as variáveis
@@ -61,12 +62,12 @@ def p_salva_variavel(p):
         # Se não foi, salva
         variaveis[nome] = { 'tipo': p[1], 'valor': None, 'nome': nome, 'linha': p.lineno(1)}
 
-# Lista de nomes = PRONTO
+# Lista de nomes
 def p_lista_nomes(p):
     "lista_nomes : NAME lista_n"
     p[0] = str(p[1]) + str(p[2])
 
-# Continuação da lista de nomes = PRONTO
+# Continuação da lista de nomes
 def p_lista_n(p):
     '''lista_n : ',' NAME lista_n
                | vazio'''
@@ -75,13 +76,13 @@ def p_lista_n(p):
     else:
         p[0] = ""
 
-# Erro na declaração de variável = PRONTO
+# Erro na declaração de variável
 def p_salva_variavel_erro(p):
     "dec_variavel : tipo error ';'"
     print("Deve vir uma varivel depois do tipo:", p[1], "\nToken recebido:", p[2], "linha: ", p.lineno(2))
     exit(1)
     
-# Tipos de variáveis = PRONTO
+# Tipos de variáveis
 def p_tipo(p):
     ''' tipo : INTEIRO 
              | REAL 
@@ -93,7 +94,7 @@ def p_tipo(p):
 
 # COMANDOS
 
-# Comandos = PRONTO
+# Comandos
 def p_comando(p):
     ''' comando : comando_se comando
                 | comando_enquanto comando
@@ -107,10 +108,12 @@ def p_comando(p):
     else:
         p[0] = None
 
+# Comando se
 def p_comando_se(p):
     "comando_se : SE '(' expressao ')' '{' comando '}' senao"
     p[0] = { 'tipo': None, 'valor': p[3], 'nome': None, 'comando_tipo': 'se', 'senao': p[8], 'comando': p[6]}
 
+# Comando senão
 def p_senao(p):
     ''' senao : SENAO '{' comando '}'
               | vazio '''
@@ -119,11 +122,12 @@ def p_senao(p):
     else:
         p[0] = None
 
+# Comando enquanto
 def p_comando_enquanto(p):
     "comando_enquanto : ENQUANTO '(' expressao ')' '{' comando '}'"
     p[0] = { 'tipo': None, 'valor': p[3], 'nome': None, 'comando_tipo': 'enquanto', 'comando': p[6]}
 
-# Atribuição de variável = PRONTO
+# Atribuição de variável
 def p_comando_atribuicao(p):
     "comando_atribuicao : name '=' expressao ';'"
     tipo = type(p[3]).__name__
@@ -139,13 +143,16 @@ def p_comando_atribuicao(p):
 
     # Verifica se o tipo da variável é compatível com o valor atribuído
     if p[1]['tipo'] != tipo:
-        print("Erro: Tipo incompativel: esperado:", p[1]['tipo'], ", recebido:", tipo, "linha: ", p.lineno(1))
-        exit(1)
+        # se o tipo do p[1] for real e o tipo do p[3] for inteiro, é compatível
+        if p[1]['tipo'] == 'real' and tipo == 'inteiro':
+            pass
+        else:
+            print("Erro: Tipo incompativel: esperado:", p[1]['tipo'], ", recebido:", tipo, "linha: ", p.lineno(1))
+            exit(1)
     # Se for compatível, seta o valor da variável
-    #variaveis[p[1]['nome']] = { 'tipo': p[1]['tipo'], 'valor': p[3], 'nome': p[1]['nome']}
     p[0] = { 'tipo': p[1]['tipo'], 'valor': p[3], 'nome': p[1]['nome'], 'comando_tipo': 'atribuicao' }
 
-# Expressões = PRONTO
+# Expressões
 def p_expressao(p):
     ''' expressao : expressao '+' expressao
                   | expressao '-' expressao
@@ -177,13 +184,19 @@ def p_expressao(p):
             if (isinstance(p[3], dict)):
                 tipo2 = p[3]['tipo']
 
-            # as duas expressoes são do mesmo tipo
+            # As duas expressoes são do mesmo tipo
             if(tipo1 == tipo2):
                 p[0] = { 'tipo': tipo1, 'op1': p[1], 'operador': p[2], 'op2': p[3], 'comando_tipo': 'binaria'}
-            # as duas expressoes são de tipos diferentes
+            # As duas expressoes são de tipos diferentes
             else:
-                print("Erro: Tipos incompativeis: " + tipo1 + " " + str(p[2]) + " " + tipo2 + " linha: ", p.lineno(1))
-                exit(1)
+                # Se um dos tipos for real e o outro inteiro, é compatível
+                if(tipo1 == 'real' and tipo2 == 'inteiro'):
+                    p[0] = { 'tipo': tipo1, 'op1': p[1], 'operador': p[2], 'op2': p[3], 'comando_tipo': 'binaria'}
+                elif(tipo1 == 'inteiro' and tipo2 == 'real'):
+                    p[0] = { 'tipo': tipo2, 'op1': p[1], 'operador': p[2], 'op2': p[3], 'comando_tipo': 'binaria'}
+                else:
+                    print("Erro: Tipos incompativeis: " + tipo1 + " " + str(p[2]) + " " + tipo2 + " linha: ", p.lineno(1))
+                    exit(1)
     elif(len(p) == 3):
         if(p[1] == "!"):
             p[0] = { 'tipo': 'inteiro', 'op1': p[2], 'operador': p[1], 'comando_tipo': 'unaria'}
@@ -196,12 +209,13 @@ def p_expressao(p):
 
 
 
-# Expressão negativa = PRONTO
+
+# Expressão negativa
 def p_expressao_negativa(p):
     "expressao : '-' expressao %prec UMINUS"
     p[0] = { 'tipo': p[2]['tipo'], 'op1': p[2], 'operador': p[1], 'comando_tipo': 'negacao'}
 
-# Expressão com nome = PRONTO
+# Expressão com nome
 def p_name(p):
     "name : NAME"
     if p[1] not in variaveis:
@@ -209,7 +223,7 @@ def p_name(p):
         exit(1)
     p[0] = variaveis[p[1]]
 
-# Função de leitura = PRONTO
+# Função de leitura
 def p_comando_entrada(p):
     "comando_entrada : LER '(' NAME ')' ';'"
     # Verifica se a variável já foi declarada
@@ -219,13 +233,14 @@ def p_comando_entrada(p):
     valor = { 'tipo': variaveis[p[3]]['tipo'], 'op1': variaveis[p[3]], 'operador': None, 'comando_tipo': 'variavel'}
     p[0] = { 'tipo': None, 'valor': valor, 'nome': p[3], 'comando_tipo': 'entrada'}
 
-# Função de escrita = PRONTO
+# Função de escrita
 def p_comando_saida(p):
     '''comando_saida : ESCREVER '(' CHAR ')' ';'
                      | ESCREVER '(' expressao ')' ';' 
                      | ESCREVER '(' name ')' ';' '''
     if not isinstance(p[3], dict):
         valor = { 'tipo': type(p[3]).__name__, 'op1': p[3], 'operador': None, 'comando_tipo': 'constante'}
+        print("aqui", valor)
         # Verifica se o tipo do valor
         if type(p[3]).__name__ == 'str':
             # Tira as aspas da string
@@ -244,12 +259,12 @@ def p_comando_saida(p):
 
 # FUNÇÕES AUXILIARES
 
-# Declaração vazia = PRONTO
+# Declaração vazia
 def p_vazio(p):
     'vazio :'
     pass
 
-# Função para mostrar o erro = PRONTO
+# Função para mostrar o erro
 def p_error(p):
     print("Erro de sintaxe token:", p, "linha: ", p.lineno)
 

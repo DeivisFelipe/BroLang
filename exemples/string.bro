@@ -1,0 +1,12 @@
+nulo principal () {
+    char a;
+    a = "uma string dentro de a";
+
+    escrever(a);
+
+    escrever("ab" < "ac");
+    escrever("ab" == "ab");
+
+    escrever("o código abaixo deve printar erro, pois é uma operação inválida.");
+    escrever(a-"k");
+}

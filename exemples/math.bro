@@ -1,0 +1,6 @@
+nulo principal () {
+    real a;
+    a = 1 + 2 * 3 / 1 - 1;
+    escrever("Resultado deve ser 6");
+    escrever(a);
+}

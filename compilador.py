@@ -1,6 +1,7 @@
 # Esse é o programa base do BroLang
-
-arquivo = 'teste.bro'
+# Arquivo que será compilado
+arquivo = 'exemples/string.bro'
+# Abre o arquivo
 with open(arquivo, 'r') as file:
     codigo = file.read()
 
